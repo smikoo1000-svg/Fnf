@@ -1,0 +1,12 @@
+{
+  "name": "piano-transcriber",
+  "version": "1.0.0",
+  "description": "음악 파일을 분석해 피아노 악보와 피아노 연주(MIDI/WAV)를 자동으로 만들어 주는 웹사이트",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.js",
+    "test:e2e": "node tests/e2e.mjs"
+  }
+}

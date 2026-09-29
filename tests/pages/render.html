@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8" />
+<title>악보 렌더러 점검</title>
+<style>
+  body { margin: 0; background: #fff; }
+  .system { position: relative; width: 100%; }
+  .system-surface { position: relative; width: 100%; }
+  .system-surface svg { width: 100%; height: auto; display: block; }
+  .measure-overlay { position: absolute; }
+</style>
+<div id="out" style="width: 900px"></div>
+<script src="/vendor/vexflow-bravura.js"></script>
+<script type="module">
+  import { buildScore, TIME_SIGNATURES } from '/js/music/score.js';
+  import { BeatGrid } from '/js/analysis/rhythm.js';
+  import { renderScore } from '/js/render/score-view.js';
+  window.renderCase = async (notes, opts = {}) => {
+    const grid = new BeatGrid(Float64Array.from({ length: 400 }, (_, i) => i * 0.5));
+    const score = buildScore(notes, grid, { timeSig: TIME_SIGNATURES[opts.ts ?? '4/4'], phase: 0, fifths: opts.fifths ?? 0, quantum: opts.quantum ?? 1 });
+    const res = await renderScore(document.getElementById('out'), score, { width: opts.width ?? 900 });
+    return { measures: score.measures.length, systems: res.systems };
+  };
+  window.ready = true;
+</script>
