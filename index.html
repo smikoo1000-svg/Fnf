@@ -15,8 +15,13 @@
       if (self.crossOriginIsolated || !('serviceWorker' in navigator) || location.protocol === 'file:') return;
       let tried = false;
       try { tried = sessionStorage.getItem('coi-reload') === '1'; } catch { return; }
+      // 사용자가 이미 조작했다면(곡 넣기·녹음·버튼) 새로 고치지 않는다: 넣은 곡이 사라지기 때문.
+      // 이번 방문은 한 스레드로 돌고, 다음 방문부터는 서비스 워커가 이미 설치돼 있어 멀티스레드가 된다.
+      let busy = false;
+      const markBusy = () => (busy = true);
+      for (const ev of ['pointerdown', 'keydown', 'drop', 'change']) addEventListener(ev, markBusy, { capture: true, once: true });
       navigator.serviceWorker.register('coi-sw.js').then(() => navigator.serviceWorker.ready).then(() => {
-        if (!self.crossOriginIsolated && !tried) {
+        if (!self.crossOriginIsolated && !tried && !busy) {
           try { sessionStorage.setItem('coi-reload', '1'); } catch { return; }
           location.reload();
         }
