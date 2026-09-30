@@ -1,0 +1,154 @@
+{
+ "summary": {
+  "pieces": 3,
+  "audioMinutes": 2.25,
+  "onsetF1": 0.981181154015505,
+  "onsetOffsetF1": 0.9134434300708159,
+  "onsetOffsetF1PedalExtended": 0.9010015550235065,
+  "onsetPrecision": 0.9982174688057041,
+  "onsetRecall": 0.9648020266633995,
+  "realTimeFactor": 1.8852038747111108,
+  "config": {
+   "secs": 45,
+   "noise": "pink",
+   "snr": 10,
+   "denoise": true,
+   "step": 8,
+   "threads": 4
+  }
+ },
+ "results": [
+  {
+   "idx": 3,
+   "id": "MIDI-Unprocessed_09_R3_2008_01-07_ORIG_MID--AUDIO_09_R3_2008_wav--2",
+   "title": "Domenico Scarlatti — Sonata K. 525",
+   "dur": 45,
+   "sec": 87.953266091,
+   "rtf": 1.9545170242444445,
+   "key": {
+    "onset": {
+     "precision": 0.9946524064171123,
+     "recall": 0.9653979238754326,
+     "f1": 0.9798068481123794,
+     "matched": 558,
+     "nRef": 578,
+     "nEst": 561
+    },
+    "onsetOffset": {
+     "precision": 0.9447415329768271,
+     "recall": 0.916955017301038,
+     "f1": 0.9306409130816505,
+     "matched": 530,
+     "nRef": 578,
+     "nEst": 561
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9946524064171123,
+     "recall": 0.9653979238754326,
+     "f1": 0.9798068481123794,
+     "matched": 558,
+     "nRef": 578,
+     "nEst": 561
+    },
+    "onsetOffset": {
+     "precision": 0.948306595365419,
+     "recall": 0.9204152249134948,
+     "f1": 0.9341527655838454,
+     "matched": 532,
+     "nRef": 578,
+     "nEst": 561
+    }
+   }
+  },
+  {
+   "idx": 7,
+   "id": "MIDI-Unprocessed_R1_D1-9-12_mid--AUDIO-from_mp3_11_R1_2015_wav--5",
+   "title": "Sergei Rachmaninoff — Prelude Op. 32 No. 8 in A Minor",
+   "dur": 45,
+   "sec": 83.12059083399998,
+   "rtf": 1.8471242407555553,
+   "key": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9799635701275046,
+     "f1": 0.9898804047838087,
+     "matched": 538,
+     "nRef": 549,
+     "nEst": 538
+    },
+    "onsetOffset": {
+     "precision": 0.9516728624535316,
+     "recall": 0.9326047358834244,
+     "f1": 0.9420423183072677,
+     "matched": 512,
+     "nRef": 549,
+     "nEst": 538
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9799635701275046,
+     "f1": 0.9898804047838087,
+     "matched": 538,
+     "nRef": 549,
+     "nEst": 538
+    },
+    "onsetOffset": {
+     "precision": 0.9330855018587361,
+     "recall": 0.9143897996357013,
+     "f1": 0.9236430542778289,
+     "matched": 502,
+     "nRef": 549,
+     "nEst": 538
+    }
+   }
+  },
+  {
+   "idx": 11,
+   "id": "MIDI-Unprocessed_SMF_17_R1_2004_03-06_ORIG_MID--AUDIO_20_R2_2004_12_Track12_wav--1",
+   "title": "Claude Debussy — Etude No. 7 \"Study in Chromatic Steps\"",
+   "dur": 45,
+   "sec": 83.428666161,
+   "rtf": 1.8539703591333332,
+   "key": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9490445859872612,
+     "f1": 0.9738562091503268,
+     "matched": 596,
+     "nRef": 628,
+     "nEst": 596
+    },
+    "onsetOffset": {
+     "precision": 0.8909395973154363,
+     "recall": 0.8455414012738853,
+     "f1": 0.8676470588235294,
+     "matched": 531,
+     "nRef": 628,
+     "nEst": 596
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9949664429530202,
+     "recall": 0.9488,
+     "f1": 0.9713349713349713,
+     "matched": 593,
+     "nRef": 625,
+     "nEst": 596
+    },
+    "onsetOffset": {
+     "precision": 0.8657718120805369,
+     "recall": 0.8256,
+     "f1": 0.8452088452088453,
+     "matched": 516,
+     "nRef": 625,
+     "nEst": 596
+    }
+   }
+  }
+ ]
+}

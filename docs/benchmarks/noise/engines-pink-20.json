@@ -1,0 +1,139 @@
+{
+ "summary": {
+  "basicPitch": {
+   "onsetF1": 0.5503418312085915,
+   "onsetOffsetF1": 0.10420882120869346
+  },
+  "dsp": {
+   "onsetF1": 0.59619014845248,
+   "onsetOffsetF1": 0.09206176916127125
+  },
+  "config": {
+   "secs": 45,
+   "noise": "pink",
+   "snr": 20
+  }
+ },
+ "results": [
+  {
+   "idx": 3,
+   "title": "Domenico Scarlatti — Sonata K. 525",
+   "basicPitch": {
+    "onset": {
+     "precision": 0.8858267716535433,
+     "recall": 0.3892733564013841,
+     "f1": 0.5408653846153846,
+     "matched": 225,
+     "nRef": 578,
+     "nEst": 254
+    },
+    "onsetOffset": {
+     "precision": 0.07480314960629922,
+     "recall": 0.0328719723183391,
+     "f1": 0.04567307692307692,
+     "matched": 19,
+     "nRef": 578,
+     "nEst": 254
+    }
+   },
+   "dsp": {
+    "onset": {
+     "precision": 0.5793226381461676,
+     "recall": 0.5622837370242214,
+     "f1": 0.5706760316066726,
+     "matched": 325,
+     "nRef": 578,
+     "nEst": 561
+    },
+    "onsetOffset": {
+     "precision": 0.053475935828877004,
+     "recall": 0.05190311418685121,
+     "f1": 0.05267778753292362,
+     "matched": 30,
+     "nRef": 578,
+     "nEst": 561
+    }
+   }
+  },
+  {
+   "idx": 7,
+   "title": "Sergei Rachmaninoff — Prelude Op. 32 No. 8 in A Minor",
+   "basicPitch": {
+    "onset": {
+     "precision": 0.9272727272727272,
+     "recall": 0.4644808743169399,
+     "f1": 0.6189320388349514,
+     "matched": 255,
+     "nRef": 549,
+     "nEst": 275
+    },
+    "onsetOffset": {
+     "precision": 0.3018181818181818,
+     "recall": 0.151183970856102,
+     "f1": 0.20145631067961167,
+     "matched": 83,
+     "nRef": 549,
+     "nEst": 275
+    }
+   },
+   "dsp": {
+    "onset": {
+     "precision": 0.7359550561797753,
+     "recall": 0.4772313296903461,
+     "f1": 0.5790055248618784,
+     "matched": 262,
+     "nRef": 549,
+     "nEst": 356
+    },
+    "onsetOffset": {
+     "precision": 0.18258426966292135,
+     "recall": 0.11839708561020036,
+     "f1": 0.14364640883977903,
+     "matched": 65,
+     "nRef": 549,
+     "nEst": 356
+    }
+   }
+  },
+  {
+   "idx": 11,
+   "title": "Claude Debussy — Etude No. 7 \"Study in Chromatic Steps\"",
+   "basicPitch": {
+    "onset": {
+     "precision": 0.9251101321585903,
+     "recall": 0.3343949044585987,
+     "f1": 0.4912280701754386,
+     "matched": 210,
+     "nRef": 628,
+     "nEst": 227
+    },
+    "onsetOffset": {
+     "precision": 0.12334801762114538,
+     "recall": 0.044585987261146494,
+     "f1": 0.0654970760233918,
+     "matched": 28,
+     "nRef": 628,
+     "nEst": 227
+    }
+   },
+   "dsp": {
+    "onset": {
+     "precision": 0.7022900763358778,
+     "recall": 0.5859872611464968,
+     "f1": 0.6388888888888888,
+     "matched": 368,
+     "nRef": 628,
+     "nEst": 524
+    },
+    "onsetOffset": {
+     "precision": 0.08778625954198473,
+     "recall": 0.0732484076433121,
+     "f1": 0.0798611111111111,
+     "matched": 46,
+     "nRef": 628,
+     "nEst": 524
+    }
+   }
+  }
+ ]
+}

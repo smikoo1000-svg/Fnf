@@ -1,0 +1,1052 @@
+[
+ {
+  "name": "합성: 환희의 송가",
+  "notes": 54,
+  "measures": 8,
+  "bpm": 100,
+  "meta": {
+   "errors": 0,
+   "warnings": 1,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "54개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "8마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "ok",
+     "detail": "입력 54 · 악보 54"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 100.0% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 54개·페달 0개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 8마디 · 음표 58개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 4개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "합성: 같은 음 반복",
+  "notes": 16,
+  "measures": 2,
+  "bpm": 100,
+  "meta": {
+   "errors": 0,
+   "warnings": 0,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "16개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "2마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "ok",
+     "detail": "입력 16 · 악보 16"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 100.0% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 16개·페달 0개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 2마디 · 음표 16개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "ok",
+     "detail": "모든 화음이 한 손 범위 안"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Franz Liszt — Concert Etude No. 2, \"Gnomenreigen\", S. 145/2",
+  "notes": 3126,
+  "measures": 64,
+  "bpm": 98,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "3126개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "64마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 3126 · 악보 2694 · 꾸밈음으로 합침 54 · 중복 합침 127 · 화음 음 수 제한 251"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 88.4% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 2748개·페달 152개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 64마디 · 음표 2724개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 211개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+  "notes": 4282,
+  "measures": 218,
+  "bpm": 131,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "4282개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "218마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 4282 · 악보 4260 · 꾸밈음으로 합침 14 · 중복 합침 2 · 화음 음 수 제한 6"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 99.9% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 4274개·페달 461개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 218마디 · 음표 4660개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 71개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Joseph Haydn — Sonata in G Major, Hob. XVI:6, First Movement",
+  "notes": 2254,
+  "measures": 131,
+  "bpm": 168,
+  "meta": {
+   "errors": 0,
+   "warnings": 1,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "2254개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "131마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "ok",
+     "detail": "입력 2254 · 악보 2231 · 꾸밈음으로 합침 23"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 100.0% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 2254개·페달 93개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 131마디 · 음표 2317개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 25개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Domenico Scarlatti — Sonata K. 525",
+  "notes": 882,
+  "measures": 39,
+  "bpm": 139,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "882개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "39마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 882 · 악보 867 · 꾸밈음으로 합침 12 · 화음 음 수 제한 3"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 99.8% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 879개·페달 24개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 39마디 · 음표 915개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 24개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Domenico Scarlatti — Sonata in D Minor, K. 9 L. 413",
+  "notes": 860,
+  "measures": 48,
+  "bpm": 120,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "860개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "48마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 860 · 악보 760 · 꾸밈음으로 합침 99 · 화음 음 수 제한 1"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 99.9% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 859개·페달 26개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 48마디 · 음표 835개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 13개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+  "notes": 4239,
+  "measures": 222,
+  "bpm": 155,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "4239개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "222마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 4239 · 악보 4220 · 꾸밈음으로 합침 15 · 화음 음 수 제한 4"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 100.0% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 4235개·페달 294개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 222마디 · 음표 4602개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 57개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Frédéric Chopin — Etudes Op. 10 Nos. 9",
+  "notes": 1256,
+  "measures": 51,
+  "bpm": 98,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "1256개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "51마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 1256 · 악보 1244 · 꾸밈음으로 합침 6 · 중복 합침 5 · 화음 음 수 제한 1"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 95.0% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 1250개·페달 126개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 51마디 · 음표 1347개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 43개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Sergei Rachmaninoff — Prelude Op. 32 No. 8 in A Minor",
+  "notes": 1400,
+  "measures": 66,
+  "bpm": 142,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "1400개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "66마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 1400 · 악보 1383 · 꾸밈음으로 합침 11 · 화음 음 수 제한 6"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 99.8% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 1394개·페달 65개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 66마디 · 음표 1424개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 40개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+  "notes": 1110,
+  "measures": 67,
+  "bpm": 142,
+  "meta": {
+   "errors": 0,
+   "warnings": 1,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "1110개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "67마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "ok",
+     "detail": "입력 1110 · 악보 1110"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 100.0% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 1110개·페달 101개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 67마디 · 음표 1206개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 29개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+  "notes": 4310,
+  "measures": 219,
+  "bpm": 149,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "4310개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "219마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 4310 · 악보 4290 · 꾸밈음으로 합침 17 · 화음 음 수 제한 3"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 100.0% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 4307개·페달 410개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 219마디 · 음표 4620개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 64개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+  "notes": 4425,
+  "measures": 179,
+  "bpm": 116,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "4425개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "179마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 4425 · 악보 4379 · 꾸밈음으로 합침 7 · 중복 합침 32 · 화음 음 수 제한 7"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 98.6% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 4386개·페달 315개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 179마디 · 음표 4872개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 63개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Claude Debussy — Etude No. 7 \"Study in Chromatic Steps\"",
+  "notes": 1897,
+  "measures": 55,
+  "bpm": 98,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "1897개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "55마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 1897 · 악보 1824 · 꾸밈음으로 합침 38 · 중복 합침 3 · 화음 음 수 제한 32"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 90.1% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 1862개·페달 121개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 55마디 · 음표 1873개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 58개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ },
+ {
+  "name": "MAESTRO 정답: Wolfgang Amadeus Mozart — Sonata in F Major, K. 280, 1st mov.",
+  "notes": 1832,
+  "measures": 112,
+  "bpm": 139,
+  "meta": {
+   "errors": 0,
+   "warnings": 2,
+   "checks": [
+    {
+     "stage": "전사",
+     "name": "음 값 유효성",
+     "status": "ok",
+     "detail": "1832개 모두 정상"
+    },
+    {
+     "stage": "전사",
+     "name": "같은 음 겹침",
+     "status": "ok",
+     "detail": "없음"
+    },
+    {
+     "stage": "악보",
+     "name": "마디 길이",
+     "status": "ok",
+     "detail": "112마디 모두 박자에 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "붙임줄 연결",
+     "status": "ok",
+     "detail": "모두 짝이 맞음"
+    },
+    {
+     "stage": "악보",
+     "name": "음 보존",
+     "status": "warn",
+     "detail": "입력 1832 · 악보 1790 · 꾸밈음으로 합침 41 · 화음 음 수 제한 1"
+    },
+    {
+     "stage": "가상 연주",
+     "name": "전사 결과와 대조",
+     "status": "ok",
+     "detail": "음 시작 일치 F1 100.0% (허용 ±70ms)"
+    },
+    {
+     "stage": "MIDI",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "음 1831개·페달 141개 일치"
+    },
+    {
+     "stage": "MusicXML",
+     "name": "다시 읽기 일치",
+     "status": "ok",
+     "detail": "올바른 XML · 112마디 · 음표 1906개 일치"
+    },
+    {
+     "stage": "연주 가능성",
+     "name": "한 손 폭·음 수",
+     "status": "warn",
+     "detail": "한 손으로 닿기 어려운 화음 20개(10도 초과), 5음 초과 화음 0개"
+    }
+   ]
+  },
+  "xsd": "ok",
+  "lilypond": "ok",
+  "lilypondWarnings": 0,
+  "pdf": true
+ }
+]
