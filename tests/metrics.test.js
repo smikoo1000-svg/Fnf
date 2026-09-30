@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { transcriptionReport, extendByPedal } from '../js/eval/metrics.js';
-import { viterbiBackwardSparse, resolveOverlapping } from '../js/analysis/transkun.js';
+import { viterbiBackwardSparse, viterbiDenseSymbol, parseScorer, resolveOverlapping } from '../js/analysis/transkun.js';
 
 const fx = JSON.parse(fs.readFileSync(new URL('./fixtures/metric_cases.json', import.meta.url)));
 
@@ -78,6 +78,35 @@ test('희소 비터비: 양수 구간만으로 조밀한 원본 비터비와 같
     }
     const fs = Math.floor(rnd() * 3);
     assert.deepEqual(viterbiBackwardSparse(T, diag, ivs, fs), viterbiDense(S, fs), `trial ${trial}`);
+  }
+});
+
+test('페달 전체 점수 비터비: 원본 점수식 S[e,b]=(q·k/16)(e−b), S[e,e]=diag 에 보너스를 더한 조밀 비터비와 같다', () => {
+  const scorer = parseScorer(fs.readFileSync(new URL('../vendor/transkun/tk_scorer.bin', import.meta.url)));
+  assert.equal(scorer.W.length, 513 * 256);
+  assert.ok(scorer.W.every(Number.isFinite) && scorer.b.every(Number.isFinite));
+  let seed = 11;
+  const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296) * 2 - 1;
+  for (const bonus of [1e-9, 2, -3]) {
+    const T = 24;
+    const ctx = Float32Array.from({ length: 2 * T * 256 }, rnd); // 기호 0, 1
+    const sym = 0;
+    const lin = (t) => Array.from({ length: 513 }, (_, o) => {
+      let a = scorer.b[o];
+      for (let i = 0; i < 256; i++) a += scorer.W[o * 256 + i] * ctx[(sym * T + t) * 256 + i];
+      return a;
+    });
+    const M = Array.from({ length: T }, (_, t) => lin(t));
+    const S = Array.from({ length: T }, () => new Float64Array(T));
+    for (let e = 0; e < T; e++) {
+      S[e][e] = M[e][512] + bonus;
+      for (let b = 0; b < e; b++) {
+        let d = 0;
+        for (let i = 0; i < 256; i++) d += (M[e][i] / 16) * M[b][256 + i];
+        S[e][b] = d * (e - b) + bonus;
+      }
+    }
+    assert.deepEqual(viterbiDenseSymbol(ctx, sym, T, scorer, bonus, 1), viterbiDense(S, 1), `bonus ${bonus}`);
   }
 });
 

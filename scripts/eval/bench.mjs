@@ -17,7 +17,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as ort from 'onnxruntime-web';
-import { transkunTranscribe, TK_PEDAL_BONUS } from '../../js/analysis/transkun.js';
+import { transkunTranscribe, parseScorer, TK_PEDAL_BONUS } from '../../js/analysis/transkun.js';
 import { transcriptionReport, extendByPedal } from '../../js/eval/metrics.js';
 import { parseMidiFile } from '../../js/eval/midi-read.js';
 import { addNoise } from '../../js/eval/noise.js';
@@ -42,6 +42,7 @@ function inWindow(notes, limit) {
 
 const core = await ort.InferenceSession.create(path.join(root, 'vendor/transkun/tk_core.onnx'), { executionProviders: ['wasm'] });
 const attr = await ort.InferenceSession.create(path.join(root, 'vendor/transkun/tk_attr.onnx'), { executionProviders: ['wasm'] });
+const scorer = parseScorer(fs.readFileSync(path.join(root, 'vendor/transkun/tk_scorer.bin')));
 const results = [];
 for (const idx of pick) {
   const piece = subset[idx];
@@ -51,7 +52,7 @@ for (const idx of pick) {
   if (args.denoise) channels = channels.map((c) => denoise(c).signal);
   const gt = parseMidiFile(new Uint8Array(fs.readFileSync(path.join(dataDir, piece.id + '.midi'))));
   const t0 = performance.now();
-  const r = await transkunTranscribe(channels, { ort, core, attr }, { stepSec: Number(args.step ?? 8), pedalBonus });
+  const r = await transkunTranscribe(channels, { ort, core, attr, scorer }, { stepSec: Number(args.step ?? 8), pedalBonus });
   const sec = (performance.now() - t0) / 1000;
   const dur = channels[0].length / 44100;
   const limit = secs || 0;

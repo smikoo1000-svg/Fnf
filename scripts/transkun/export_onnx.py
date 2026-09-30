@@ -2,6 +2,8 @@
 
   vendor/transkun/tk_core.onnx  frames[C,T,4096] → posIdx[K,3](end,begin,sym) · posVal[K] · ctx[90,T,256]
   vendor/transkun/tk_attr.onnx  ctxBegin[N,256] · ctxEnd[N,256] → velocity[N] · ofValue[N,2] · presence[N,2]
+  vendor/transkun/tk_scorer.bin 구간 점수기 scorer.map 가중치(fp16 [513,256]) + 편향(fp32 [513]).
+                                페달 기호의 전체 구간 점수를 JS 에서 다시 계산할 때 쓴다 (js/analysis/transkun.js viterbiDenseSymbol)
 
 후처리(semi-CRF 비터비, 구간 이어 붙이기)는 js/analysis/transkun.js 가 원본과 같게 수행한다.
 구간 점수 행렬 S[T,T,90] 는 16초 구간에서 171MB 이므로, 비터비에 실제로 쓰이는 양수 항목만 희소하게 내보낸다
@@ -134,3 +136,7 @@ torch.onnx.export(Attr(model).eval(), (torch.randn(7, 256), torch.randn(7, 256))
 for p in (core_path, attr_path):
     fp16_storage(p)
     print(p, os.path.getsize(p) // 1024, "KB")
+lin = model.scorer.map[0]
+with open(os.path.join(out_dir, "tk_scorer.bin"), "wb") as f:
+    f.write(lin.weight.detach().numpy().astype("<f2").tobytes() + lin.bias.detach().numpy().astype("<f4").tobytes())
+print(os.path.join(out_dir, "tk_scorer.bin"))

@@ -1,5 +1,5 @@
 // 브라우저/워커에서 Transkun 을 실행하는 런타임: ONNX Runtime Web(WASM) 과 모델 세션을 한 번만 만들어 재사용한다.
-import { transkunTranscribe } from './transkun.js';
+import { transkunTranscribe, parseScorer } from './transkun.js';
 
 let runtime = null;
 
@@ -12,11 +12,15 @@ async function loadRuntime() {
   const threads = self.crossOriginIsolated ? Math.max(1, Math.min(4, (navigator.hardwareConcurrency || 4) - 1)) : 1;
   ort.env.wasm.numThreads = threads;
   const opt = { executionProviders: ['wasm'], graphOptimizationLevel: 'all' };
-  const [core, attr] = await Promise.all([
+  const [core, attr, scorer] = await Promise.all([
     ort.InferenceSession.create(new URL('transkun/tk_core.onnx', base).href, opt),
     ort.InferenceSession.create(new URL('transkun/tk_attr.onnx', base).href, opt),
+    fetch(new URL('transkun/tk_scorer.bin', base).href).then((r) => {
+      if (!r.ok) throw new Error(`tk_scorer.bin: HTTP ${r.status}`);
+      return r.arrayBuffer();
+    }).then(parseScorer),
   ]);
-  runtime = { ort, core, attr, threads };
+  runtime = { ort, core, attr, scorer, threads };
   return runtime;
 }
 

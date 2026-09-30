@@ -8,15 +8,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as ort from 'onnxruntime-web';
-import { transkunTranscribe } from '../../js/analysis/transkun.js';
+import { transkunTranscribe, parseScorer } from '../../js/analysis/transkun.js';
 import { transcriptionReport, extendByPedal } from '../../js/eval/metrics.js';
 import { parseMidiFile } from '../../js/eval/midi-read.js';
 import { readWav } from '../../js/eval/wav.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const args = Object.fromEntries(process.argv.slice(2).reduce((a, x, i, arr) => (x.startsWith('--') ? [...a, [x.slice(2), arr[i + 1]]] : a), []));
+const only = args.only ? Number(args.only) : null;
 const list = JSON.parse(fs.readFileSync(path.resolve(args.list ?? path.join(root, 'scripts/eval/maestro-tune.json')), 'utf8'));
-const bonuses = String(args.bonus ?? '0,0.25,0.5,1,1.5,2,3').split(',').map(Number);
+const bonuses = String(args.bonus ?? '0,1,2,4,6,8,12').split(',').map(Number);
 const dataDir = path.join(root, 'data/maestro');
 const CTX = 256;
 const PEDAL_SYMS = 2; // 기호 0 = 서스테인, 1 = 소프트
@@ -24,6 +25,7 @@ ort.env.wasm.numThreads = Number(args.threads ?? 4);
 
 const core = await ort.InferenceSession.create(path.join(root, 'vendor/transkun/tk_core.onnx'), { executionProviders: ['wasm'] });
 const attr = await ort.InferenceSession.create(path.join(root, 'vendor/transkun/tk_attr.onnx'), { executionProviders: ['wasm'] });
+const scorer = parseScorer(fs.readFileSync(path.join(root, 'vendor/transkun/tk_scorer.bin')));
 
 /** 실제 신경망을 돌리면서 페달 기호의 출력만 저장 */
 async function buildCache(piece, channels) {
@@ -81,7 +83,7 @@ function replayCore(piece) {
 }
 
 const results = [];
-for (const piece of list) {
+for (const piece of only != null ? list.slice(only, only + 1) : list) {
   const wav = path.join(dataDir, piece.id + '.wav');
   if (!fs.existsSync(wav)) {
     console.log('없음(건너뜀):', piece.id);
@@ -98,7 +100,7 @@ for (const piece of list) {
   const notes = JSON.parse(fs.readFileSync(path.join(dataDir, piece.id + '.notes.json'), 'utf8'));
   const row = { id: piece.id, title: `${piece.composer} — ${piece.title}`, f1: {}, nPedals: {}, nPedalsRef: gt.sustain.length };
   for (const b of bonuses) {
-    const r = await transkunTranscribe(channels, { ort, core: replayCore(piece), attr }, { pedalBonus: b });
+    const r = await transkunTranscribe(channels, { ort, core: replayCore(piece), attr, scorer }, { pedalBonus: b });
     const sustain = r.pedals.filter((p) => p.pitch === -64);
     row.f1[b] = transcriptionReport(ref, extendByPedal(notes, sustain)).onsetOffset.f1;
     row.nPedals[b] = sustain.length;

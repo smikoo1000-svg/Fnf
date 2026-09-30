@@ -102,6 +102,65 @@ export function resolveOverlapping(events) {
 }
 
 /**
+ * 구간 점수기 가중치 (vendor/transkun/tk_scorer.bin: 원본 scorer.map = Linear(256 → 513) 의 가중치 fp16 + 편향 fp32).
+ * tk_core.onnx 안의 것과 같은 값이며, 페달 기호의 전체 구간 점수를 JS 에서 다시 계산하는 데 쓴다.
+ */
+export function parseScorer(bytes) {
+  const u8 = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  const OUT = 2 * CTX_DIM + 1;
+  const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+  const W = new Float32Array(OUT * CTX_DIM);
+  for (let i = 0; i < W.length; i++) W[i] = halfToFloat(dv.getUint16(2 * i, true));
+  const b = new Float32Array(OUT);
+  for (let i = 0; i < OUT; i++) b[i] = dv.getFloat32(2 * W.length + 4 * i, true);
+  return { W, b };
+}
+
+function halfToFloat(h) {
+  const s = h & 0x8000 ? -1 : 1;
+  const e = (h >> 10) & 0x1f;
+  const f = h & 0x3ff;
+  if (e === 0) return s * f * 2 ** -24;
+  if (e === 31) return f ? NaN : s * Infinity;
+  return s * (1 + f / 1024) * 2 ** (e - 15);
+}
+
+/**
+ * 한 기호의 전체 구간 점수로 semi-CRF 비터비 (원본 ScaledInnerProductIntervalScorer 식):
+ *   S[e,b] = (q_e · k_b / √256) × (e − b)   (e > b),   S[e,e] = diag_e
+ * 모든 구간(단일 프레임 포함)에 bonus 를 더한다. bonus = 0 이면 희소 디코딩과 같은 경로가 나온다.
+ */
+export function viterbiDenseSymbol(ctx, sym, T, scorer, bonus, forcedStart) {
+  const D = CTX_DIM;
+  const OUT = 2 * D + 1;
+  const q = new Float32Array(T * D);
+  const k = new Float32Array(T * D);
+  const dg = new Float64Array(T);
+  const inv = 1 / Math.sqrt(D);
+  for (let t = 0; t < T; t++) {
+    const c = ctx.subarray((sym * T + t) * D, (sym * T + t + 1) * D);
+    for (let o = 0; o < OUT; o++) {
+      let acc = scorer.b[o];
+      const w = o * D;
+      for (let i = 0; i < D; i++) acc += scorer.W[w + i] * c[i];
+      if (o < D) q[t * D + o] = acc * inv;
+      else if (o < 2 * D) k[t * D + o - D] = acc;
+      else dg[t] = acc + bonus;
+    }
+  }
+  const intervals = [];
+  for (let e = 1; e < T; e++) {
+    for (let b = 0; b < e; b++) {
+      let dot = 0;
+      for (let i = 0; i < D; i++) dot += q[e * D + i] * k[b * D + i];
+      const score = dot * (e - b) + bonus;
+      if (score > 0) intervals.push({ begin: b, end: e, score });
+    }
+  }
+  return viterbiBackwardSparse(T, dg, intervals, forcedStart);
+}
+
+/**
  * ONNX 출력(양수 구간 목록) → 기호별 비터비 경로.
  * pedalBonus > 0 이면 서스테인 페달 구간마다 점수를 더해, 짧게 떼었다 다시 밟는 페달(리페달링)을
  * 한 구간으로 합쳐 버리는 경향을 줄인다(원본에 없는 후처리, 0 이면 원본과 같다).
@@ -123,7 +182,7 @@ function decodeSegment(posIdx, posVal, T, forcedStartPos, pedalBonus = 0) {
 
 /**
  * @param {Float32Array[]} channels 44.1kHz, 1~2 채널
- * @param {object} rt { ort, core, attr } — onnxruntime-web 모듈과 두 세션
+ * @param {object} rt { ort, core, attr, scorer? } — onnxruntime-web 모듈, 두 세션, 페달 전체 점수용 가중치(parseScorer, pedalBonus ≠ 0 일 때 사용)
  * @param {{segmentSec?:number, stepSec?:number, pedalBonus?:number, onProgress?:Function, shouldCancel?:Function}} [opt]
  * @returns {Promise<{notes:{start:number,end:number,pitch:number,velocity:number}[], pedals:{start:number,end:number,pitch:number,velocity:number}[]}>}
  */
@@ -151,8 +210,10 @@ export async function transkunTranscribe(channels, rt, { segmentSec = 16, stepSe
     const { data, dims, nFrame } = makeFrames(channels, i - pad, segmentSize);
     const out = await core.run({ frames: new ort.Tensor('float32', data, dims) });
     const T = nFrame;
-    const paths = decodeSegment(out.posIdx.data, out.posVal.data, T, startPos, pedalBonus);
     const ctx = out.ctx.data;
+    const dense = pedalBonus !== 0 && rt.scorer;
+    const paths = decodeSegment(out.posIdx.data, out.posVal.data, T, startPos, dense ? 0 : pedalBonus);
+    if (dense) paths[0] = viterbiDenseSymbol(ctx, 0, T, rt.scorer, pedalBonus, startPos[0]);
     const nIv = paths.reduce((a, p) => a + p.length, 0);
 
     const lastP = new Array(N_SYM).fill(0);
