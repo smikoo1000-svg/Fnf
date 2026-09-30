@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildScore, splitSpan, TIME_SIGNATURES, meterInfo } from '../js/music/score.js';
+import { buildScore, splitSpan, TIME_SIGNATURES, meterInfo, scoreToPlayback } from '../js/music/score.js';
 import { BeatGrid } from '../js/analysis/rhythm.js';
 import { detectKey, keyFifths, keyNameKo, spellMidi } from '../js/analysis/key.js';
 
@@ -242,4 +242,22 @@ test('손 배정: 화음 구성음의 끝 시점이 조금씩 달라도(실제 �
   const s = buildScore(notes, grid120, { timeSig: TIME_SIGNATURES['4/4'], phase: 0 });
   assert.deepEqual(s.measures[0].bass.find((p) => !p.rest).midis, [48, 55, 64]);
   assert.deepEqual(s.measures[0].treble.find((p) => !p.rest).midis, [72]);
+});
+
+test('페달: 박 격자로 양자화되고 MIDI(CC64)·MusicXML·재생 길이에 반영된다', () => {
+  const notes = [note(60, 0, 1), note(64, 1, 1), note(67, 4, 1)];
+  const pedals = [{ start: 0.02, end: 1.5 }, { start: 1.0, end: 1.9 }, { start: 2.0, end: 2.95 }]; // 초 (120BPM: 박=0.5초)
+  const s = buildScore(notes, grid120, { timeSig: TIME_SIGNATURES['4/4'], phase: 0, pedals });
+  // 0~3박, 2~3.8박 겹침 → 합쳐짐 / 4~5.9박 → 16분음표 단위로
+  assert.deepEqual(s.pedals, [{ start: 0, end: 15 }, { start: 16, end: 24 }]);
+  // 재생: 페달을 밟은 채 뗀 60(0~1박)은 페달 끝(15유닛)까지 울린다
+  const play = scoreToPlayback(s);
+  const c4 = play.find((n) => n.midi === 60);
+  assert.ok(Math.abs(c4.dur - 15 * s.secondsPerUnit) < 1e-9);
+  const midi = parseMidi(scoreToMidi(s));
+  const cc = midi.tracks[2].filter((e) => e.kind === 0xb0 && e.a === 64);
+  assert.deepEqual(cc.map((e) => [e.tick, e.b]), [[0, 127], [15 * 120, 0], [16 * 120, 127], [24 * 120, 0]]);
+  const xml = scoreToMusicXml(s);
+  assert.equal((xml.match(/<pedal type="start"/g) ?? []).length, 2);
+  assert.equal((xml.match(/<pedal type="stop"/g) ?? []).length, 2);
 });

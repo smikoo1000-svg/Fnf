@@ -15,9 +15,14 @@
   import { buildScore, TIME_SIGNATURES } from '/js/music/score.js';
   import { BeatGrid } from '/js/analysis/rhythm.js';
   import { renderScore } from '/js/render/score-view.js';
+  import { applyFingering } from '/js/music/fingering.js';
   window.renderCase = async (notes, opts = {}) => {
     const grid = new BeatGrid(Float64Array.from({ length: 400 }, (_, i) => i * 0.5));
-    const score = buildScore(notes, grid, { timeSig: TIME_SIGNATURES[opts.ts ?? '4/4'], phase: 0, fifths: opts.fifths ?? 0, quantum: opts.quantum ?? 1 });
+    const score = buildScore(notes, grid, { timeSig: TIME_SIGNATURES[opts.ts ?? '4/4'], phase: 0, fifths: opts.fifths ?? 0, quantum: opts.quantum ?? 1, pedals: opts.pedals ?? [] });
+    if (opts.fingering) {
+      applyFingering(score);
+      score.showFingering = true;
+    }
     const res = await renderScore(document.getElementById('out'), score, { width: opts.width ?? 900 });
     return { measures: score.measures.length, systems: res.systems };
   };

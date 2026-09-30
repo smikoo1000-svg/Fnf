@@ -8,6 +8,21 @@
   <meta name="color-scheme" content="light dark" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234338ca'/%3E%3Cpath fill='%23fff' d='M7 8h4v16H7zM14 8h4v16h-4zM21 8h4v16h-4z' opacity='.92'/%3E%3Cpath fill='%231b1b2f' d='M10 8h3v10h-3zM17 8h3v10h-3z'/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="css/style.css" />
+  <script>
+    // 헤더를 바꿀 수 없는 정적 호스팅(GitHub Pages 등)에서는 서비스 워커(coi-sw.js)로 교차 출처 격리를 켜고 한 번 새로 고친다.
+    // (피아노 전용 AI 엔진이 CPU 여러 개를 쓰려면 필요. 실패해도 한 스레드로 동작한다)
+    (() => {
+      if (self.crossOriginIsolated || !('serviceWorker' in navigator) || location.protocol === 'file:') return;
+      let tried = false;
+      try { tried = sessionStorage.getItem('coi-reload') === '1'; } catch { return; }
+      navigator.serviceWorker.register('coi-sw.js').then(() => navigator.serviceWorker.ready).then(() => {
+        if (!self.crossOriginIsolated && !tried) {
+          try { sessionStorage.setItem('coi-reload', '1'); } catch { return; }
+          location.reload();
+        }
+      }).catch(() => {});
+    })();
+  </script>
 </head>
 <body>
   <a class="skip" href="#main">본문으로 건너뛰기</a>
@@ -52,7 +67,8 @@
         <div class="grid">
           <fieldset class="field">
             <legend>분석 엔진</legend>
-            <label class="radio"><input type="radio" name="engine" value="ml" checked /> <span><b>AI 정밀 분석</b> <small>(권장 · 처음 한 번 모델을 불러오며, GPU가 있으면 빨라요)</small></span></label>
+            <label class="radio"><input type="radio" name="engine" value="piano" checked /> <span><b>피아노 전용 AI</b> <small>(권장 · 피아노 독주 녹음에 가장 정확 · 페달도 인식 · 처음 한 번 모델(약 29MB)을 받고, CPU로 곡 길이의 1~2배 시간이 걸려요)</small></span></label>
+            <label class="radio"><input type="radio" name="engine" value="ml" /> <span><b>범용 AI</b> <small>(노래·밴드처럼 여러 악기가 섞인 음악이나 합성음 · GPU가 있으면 빨라요)</small></span></label>
             <label class="radio"><input type="radio" name="engine" value="dsp" /> <span><b>내장 빠른 분석</b> <small>(신호처리 방식 · 정확도는 낮지만 가볍고 빨라요)</small></span></label>
           </fieldset>
           <div class="field">
@@ -87,6 +103,11 @@
         <h2 id="h-result" class="card-title"><span class="step">2</span>분석 결과</h2>
         <ul id="chips" class="chips" aria-label="분석 요약"></ul>
         <p id="engine-note" class="muted note" hidden></p>
+        <details id="check" class="check-report">
+          <summary id="check-summary">검증 리포트</summary>
+          <p class="muted note">악보를 만들 때마다 단계(전사 → 악보 → MIDI·MusicXML) 사이의 일관성을 자동으로 확인합니다. 한 단계의 실수가 다음 단계로 번지는 것을 잡기 위한 검사이며, 전사 자체가 맞았는지는 알 수 없습니다.</p>
+          <ul id="check-list" class="check-list"></ul>
+        </details>
       </div>
 
       <div class="card">
@@ -139,6 +160,9 @@
           </div>
           <div class="field check">
             <label class="radio"><input id="legato" type="checkbox" checked /> <span>짧은 쉼은 이어서 표기 <small>(악보를 더 읽기 쉽게)</small></span></label>
+            <label class="radio"><input id="pedal" type="checkbox" checked /> <span>페달 표시 <small>(피아노 전용 AI가 인식한 서스테인 페달)</small></span></label>
+            <label class="radio"><input id="fingering" type="checkbox" checked /> <span>운지 제안 표시 <small>(손가락 번호 · 회색 번호는 비슷하게 좋은 다른 운지도 있는 곳)</small></span></label>
+            <label class="radio"><input id="ornaments" type="checkbox" checked /> <span>꾸밈음 감지 <small>(앞꾸밈음·트릴을 찾아 작은 음표/tr로 표기 · 규칙 기반이라 틀릴 수 있어요)</small></span></label>
           </div>
         </div>
       </div>

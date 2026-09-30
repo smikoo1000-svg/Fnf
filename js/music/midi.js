@@ -1,5 +1,7 @@
 // 표준 MIDI 파일(SMF, format 1) 작성기. 오른손/왼손을 별도 트랙으로 기록한다.
 
+import { performanceNotes } from './score.js';
+
 const PPQ = 480;
 const TICKS_PER_UNIT = PPQ / 4; // 유닛 = 16분음표
 
@@ -55,10 +57,17 @@ export function scoreToMidi(score, { title = 'Piano Transcription' } = {}) {
     const ev = [];
     ev.push({ tick: 0, order: 0, bytes: meta(0x03, utf8(name)) });
     ev.push({ tick: 0, order: 1, bytes: [0xc0, 0] }); // Acoustic Grand Piano
-    for (const n of score.notes) {
+    if (hand === 'bass') {
+      // 서스테인 페달(CC64): 같은 tick 이면 떼기(order 0)가 밟기(order 4)보다 먼저
+      for (const pd of score.pedals ?? []) {
+        ev.push({ tick: pd.start * TICKS_PER_UNIT, order: 4, bytes: [0xb0, 64, 127] });
+        ev.push({ tick: pd.end * TICKS_PER_UNIT, order: 0, bytes: [0xb0, 64, 0] });
+      }
+    }
+    for (const n of performanceNotes(score)) {
       if (n.hand !== hand) continue;
-      const on = n.start * TICKS_PER_UNIT;
-      const off = Math.max(on + 1, n.end * TICKS_PER_UNIT);
+      const on = Math.round(n.start * TICKS_PER_UNIT);
+      const off = Math.max(on + 1, Math.round(n.end * TICKS_PER_UNIT));
       const vel = Math.min(127, Math.max(1, Math.round(n.vel)));
       ev.push({ tick: on, order: 3, bytes: [0x90, n.midi, vel] });
       ev.push({ tick: off, order: 2, bytes: [0x80, n.midi, 0] }); // 같은 tick이면 note-off 먼저

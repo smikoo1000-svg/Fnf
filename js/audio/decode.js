@@ -2,18 +2,6 @@
 
 export const ANALYSIS_RATE = 22050;
 
-/** 채널 평균으로 모노화 */
-function toMono(buffer) {
-  const n = buffer.length;
-  const out = new Float32Array(n);
-  const ch = buffer.numberOfChannels;
-  for (let c = 0; c < ch; c++) {
-    const d = buffer.getChannelData(c);
-    for (let i = 0; i < n; i++) out[i] += d[i] / ch;
-  }
-  return out;
-}
-
 /**
  * @param {ArrayBuffer} arrayBuffer
  * @returns {Promise<{playback:AudioBuffer, samples:Float32Array, duration:number}>}
@@ -31,6 +19,11 @@ export async function decodeAudio(arrayBuffer) {
   } finally {
     ctx.close?.();
   }
+  return fromAudioBuffer(playback);
+}
+
+/** 이미 디코딩된 AudioBuffer → {playback, samples(22050Hz 모노), duration} */
+export async function fromAudioBuffer(playback) {
   const off = new OfflineAudioContext(1, Math.max(1, Math.ceil(playback.duration * ANALYSIS_RATE)), ANALYSIS_RATE);
   const src = off.createBufferSource();
   src.buffer = playback;
@@ -38,6 +31,22 @@ export async function decodeAudio(arrayBuffer) {
   src.start();
   const rendered = await off.startRendering();
   return { playback, samples: rendered.getChannelData(0).slice(), duration: playback.duration };
+}
+
+/**
+ * 피아노 전용 엔진(Transkun) 입력: 44.1kHz, 최대 2채널 (원본 모델은 스테레오 전력을 평균해 쓴다)
+ * @returns {Promise<Float32Array[]>}
+ */
+export async function toChannels44k(buffer) {
+  const channels = Math.min(2, buffer.numberOfChannels);
+  if (buffer.sampleRate === 44100) return Array.from({ length: channels }, (_, c) => buffer.getChannelData(c).slice());
+  const off = new OfflineAudioContext(channels, Math.max(1, Math.ceil(buffer.duration * 44100)), 44100);
+  const src = off.createBufferSource();
+  src.buffer = buffer;
+  src.connect(off.destination);
+  src.start();
+  const r = await off.startRendering();
+  return Array.from({ length: channels }, (_, c) => r.getChannelData(c).slice());
 }
 
 /** 구간 자르기(초). samples/playback 모두 동일 구간으로 맞춘다. */

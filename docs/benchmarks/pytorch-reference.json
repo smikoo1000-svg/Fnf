@@ -1,0 +1,96 @@
+{
+ "note": "PyTorch 원본 transkun 2.0.1 (pip), CPU 2스레드, 구간 16초/이동 8초, mir_eval 0.8.2 채점. scratch 스크립트로 측정.",
+ "results": {
+  "MIDI-Unprocessed_02_R1_2011_MID--AUDIO_R1-D1_10_Track10_wav": {
+   "onsetF1": 0.9748119070984625,
+   "onsetOffsetF1": 0.9417729800457965,
+   "onsetOffsetF1PedalExtended": 0.9306509649983644,
+   "sec": 155.97687074829932,
+   "cpuSec": 97.73553013801575
+  },
+  "MIDI-Unprocessed_04_R2_2008_01-04_ORIG_MID--AUDIO_04_R2_2008_wav--3": {
+   "onsetF1": 0.984484188084804,
+   "onsetOffsetF1": 0.8184294681985077,
+   "onsetOffsetF1PedalExtended": 0.8620158711358522,
+   "sec": 403.9386848072562,
+   "cpuSec": 205.87700366973877
+  },
+  "MIDI-Unprocessed_05_R1_2011_MID--AUDIO_R1-D2_10_Track10_wav": {
+   "onsetF1": 0.9944233772027661,
+   "onsetOffsetF1": 0.9471336158822217,
+   "onsetOffsetF1PedalExtended": 0.9502565246486727,
+   "sec": 187.9079365079365,
+   "cpuSec": 101.8635036945343
+  },
+  "MIDI-Unprocessed_09_R3_2008_01-07_ORIG_MID--AUDIO_09_R3_2008_wav--2": {
+   "onsetF1": 0.9885321100917431,
+   "onsetOffsetF1": 0.9380733944954128,
+   "onsetOffsetF1PedalExtended": 0.9426605504587157,
+   "sec": 67.15083900226757,
+   "cpuSec": 38.3519721031189
+  },
+  "MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--1": {
+   "onsetF1": 0.9970845481049563,
+   "onsetOffsetF1": 0.9562682215743439,
+   "onsetOffsetF1PedalExtended": 0.9865889212827988,
+   "sec": 97.14947845804988,
+   "cpuSec": 80.86032152175903
+  },
+  "MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--4": {
+   "onsetF1": 0.9808199472548549,
+   "onsetOffsetF1": 0.7969311915607767,
+   "onsetOffsetF1PedalExtended": 0.9494126108846799,
+   "sec": 344.3674603174603,
+   "cpuSec": 179.23401141166687
+  },
+  "MIDI-Unprocessed_24_R1_2011_MID--AUDIO_R1-D9_11_Track11_wav": {
+   "onsetF1": 0.9887459807073955,
+   "onsetOffsetF1": 0.8199356913183281,
+   "onsetOffsetF1PedalExtended": 0.9284565916398714,
+   "sec": 125.80863945578231,
+   "cpuSec": 68.26509666442871
+  },
+  "MIDI-Unprocessed_R1_D1-9-12_mid--AUDIO-from_mp3_11_R1_2015_wav--5": {
+   "onsetF1": 0.9920863309352518,
+   "onsetOffsetF1": 0.925179856115108,
+   "onsetOffsetF1PedalExtended": 0.9525179856115107,
+   "sec": 110.90521541950113,
+   "cpuSec": 57.21069002151489
+  },
+  "MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_03_R2_2015_wav--1": {
+   "onsetF1": 0.9914759982054734,
+   "onsetOffsetF1": 0.7788245850157021,
+   "onsetOffsetF1PedalExtended": 0.9528936742934051,
+   "sec": 114.94687074829932,
+   "cpuSec": 64.11652827262878
+  },
+  "MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_06_R2_2015_wav--1": {
+   "onsetF1": 0.9924215926314562,
+   "onsetOffsetF1": 0.8338579923050016,
+   "onsetOffsetF1PedalExtended": 0.9611752360965373,
+   "sec": 355.4208390022676,
+   "cpuSec": 196.8081681728363
+  },
+  "MIDI-Unprocessed_R2_D2-19-21-22_mid--AUDIO-from_mp3_19_R2_2015_wav--3": {
+   "onsetF1": 0.9937507101465743,
+   "onsetOffsetF1": 0.8505851607771844,
+   "onsetOffsetF1PedalExtended": 0.9653448471764572,
+   "sec": 369.2937641723356,
+   "cpuSec": 279.56517362594604
+  },
+  "MIDI-Unprocessed_SMF_17_R1_2004_03-06_ORIG_MID--AUDIO_20_R2_2004_12_Track12_wav--1": {
+   "onsetF1": 0.9901674196120117,
+   "onsetOffsetF1": 0.9008769598724422,
+   "onsetOffsetF1PedalExtended": 0.9136327398352379,
+   "sec": 135.44190476190477,
+   "cpuSec": 78.67055153846741
+  },
+  "ORIG-MIDI_03_7_6_13_Group__MID--AUDIO_09_R1_2013_wav--3": {
+   "onsetF1": 0.9983597594313832,
+   "onsetOffsetF1": 0.9103335155822855,
+   "onsetOffsetF1PedalExtended": 0.9617277200656096,
+   "sec": 193.97895691609978,
+   "cpuSec": 124.21371364593506
+  }
+ }
+}

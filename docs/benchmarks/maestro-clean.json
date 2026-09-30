@@ -1,0 +1,594 @@
+{
+ "summary": {
+  "pieces": 13,
+  "audioMinutes": 44.37145767195768,
+  "onsetF1": 0.9897825483730873,
+  "onsetOffsetF1": 0.8783296933394168,
+  "onsetOffsetF1PedalExtended": 0.9427683408737747,
+  "onsetPrecision": 0.9979414091859744,
+  "onsetRecall": 0.9818405129349628,
+  "realTimeFactor": 1.4325529430951158,
+  "config": {
+   "secs": 0,
+   "noise": null,
+   "snr": null,
+   "denoise": false,
+   "step": 8,
+   "threads": 4
+  }
+ },
+ "results": [
+  {
+   "idx": 0,
+   "id": "MIDI-Unprocessed_02_R1_2011_MID--AUDIO_R1-D1_10_Track10_wav",
+   "title": "Franz Liszt — Concert Etude No. 2, \"Gnomenreigen\", S. 145/2",
+   "dur": 155.97687074829932,
+   "sec": 131.60544724399998,
+   "rtf": 0.843749759901084,
+   "key": {
+    "onset": {
+     "precision": 0.9973226238286479,
+     "recall": 0.9532949456174025,
+     "f1": 0.9748119070984625,
+     "matched": 2980,
+     "nRef": 3126,
+     "nEst": 2988
+    },
+    "onsetOffset": {
+     "precision": 0.963186077643909,
+     "recall": 0.9206653870761357,
+     "f1": 0.9414458619561661,
+     "matched": 2878,
+     "nRef": 3126,
+     "nEst": 2988
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9973226238286479,
+     "recall": 0.9532949456174025,
+     "f1": 0.9748119070984625,
+     "matched": 2980,
+     "nRef": 3126,
+     "nEst": 2988
+    },
+    "onsetOffset": {
+     "precision": 0.9521419009370816,
+     "recall": 0.9101087651951375,
+     "f1": 0.9306509649983644,
+     "matched": 2845,
+     "nRef": 3126,
+     "nEst": 2988
+    }
+   }
+  },
+  {
+   "idx": 1,
+   "id": "MIDI-Unprocessed_04_R2_2008_01-04_ORIG_MID--AUDIO_04_R2_2008_wav--3",
+   "title": "Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+   "dur": 403.9386848072562,
+   "sec": 345.390763381,
+   "rtf": 0.8550574044320786,
+   "key": {
+    "onset": {
+     "precision": 0.9987983657774573,
+     "recall": 0.9705744978981784,
+     "f1": 0.984484188084804,
+     "matched": 4156,
+     "nRef": 4282,
+     "nEst": 4161
+    },
+    "onsetOffset": {
+     "precision": 0.8305695746214852,
+     "recall": 0.8070994862213918,
+     "f1": 0.8186663508231671,
+     "matched": 3456,
+     "nRef": 4282,
+     "nEst": 4161
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9987983657774573,
+     "recall": 0.9705744978981784,
+     "f1": 0.984484188084804,
+     "matched": 4156,
+     "nRef": 4282,
+     "nEst": 4161
+    },
+    "onsetOffset": {
+     "precision": 0.8740687334775294,
+     "recall": 0.8493694535263895,
+     "f1": 0.8615421058865332,
+     "matched": 3637,
+     "nRef": 4282,
+     "nEst": 4161
+    }
+   }
+  },
+  {
+   "idx": 2,
+   "id": "MIDI-Unprocessed_05_R1_2011_MID--AUDIO_R1-D2_10_Track10_wav",
+   "title": "Joseph Haydn — Sonata in G Major, Hob. XVI:6, First Movement",
+   "dur": 187.9079365079365,
+   "sec": 154.31518992700003,
+   "rtf": 0.8212276330355123,
+   "key": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9889086069210293,
+     "f1": 0.9944233772027661,
+     "matched": 2229,
+     "nRef": 2254,
+     "nEst": 2229
+    },
+    "onsetOffset": {
+     "precision": 0.952445042620009,
+     "recall": 0.9418811002661934,
+     "f1": 0.9471336158822217,
+     "matched": 2123,
+     "nRef": 2254,
+     "nEst": 2229
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9889086069210293,
+     "f1": 0.9944233772027661,
+     "matched": 2229,
+     "nRef": 2254,
+     "nEst": 2229
+    },
+    "onsetOffset": {
+     "precision": 0.955585464333782,
+     "recall": 0.9449866903283053,
+     "f1": 0.9502565246486727,
+     "matched": 2130,
+     "nRef": 2254,
+     "nEst": 2229
+    }
+   }
+  },
+  {
+   "idx": 3,
+   "id": "MIDI-Unprocessed_09_R3_2008_01-07_ORIG_MID--AUDIO_09_R3_2008_wav--2",
+   "title": "Domenico Scarlatti — Sonata K. 525",
+   "dur": 67.15083900226757,
+   "sec": 67.34309523900005,
+   "rtf": 1.0028630504039717,
+   "key": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9773242630385488,
+     "f1": 0.9885321100917431,
+     "matched": 862,
+     "nRef": 882,
+     "nEst": 862
+    },
+    "onsetOffset": {
+     "precision": 0.9489559164733179,
+     "recall": 0.927437641723356,
+     "f1": 0.9380733944954128,
+     "matched": 818,
+     "nRef": 882,
+     "nEst": 862
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9773242630385488,
+     "f1": 0.9885321100917431,
+     "matched": 862,
+     "nRef": 882,
+     "nEst": 862
+    },
+    "onsetOffset": {
+     "precision": 0.9535962877030162,
+     "recall": 0.9319727891156463,
+     "f1": 0.9426605504587157,
+     "matched": 822,
+     "nRef": 882,
+     "nEst": 862
+    }
+   }
+  },
+  {
+   "idx": 4,
+   "id": "MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--1",
+   "title": "Domenico Scarlatti — Sonata in D Minor, K. 9 L. 413",
+   "dur": 97.14947845804988,
+   "sec": 94.58102523299993,
+   "rtf": 0.9735618423709909,
+   "key": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9941860465116279,
+     "f1": 0.9970845481049563,
+     "matched": 855,
+     "nRef": 860,
+     "nEst": 855
+    },
+    "onsetOffset": {
+     "precision": 0.9590643274853801,
+     "recall": 0.9534883720930233,
+     "f1": 0.9562682215743439,
+     "matched": 820,
+     "nRef": 860,
+     "nEst": 855
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9941860465116279,
+     "f1": 0.9970845481049563,
+     "matched": 855,
+     "nRef": 860,
+     "nEst": 855
+    },
+    "onsetOffset": {
+     "precision": 0.9894736842105263,
+     "recall": 0.9837209302325581,
+     "f1": 0.9865889212827988,
+     "matched": 846,
+     "nRef": 860,
+     "nEst": 855
+    }
+   }
+  },
+  {
+   "idx": 5,
+   "id": "MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--4",
+   "title": "Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+   "dur": 344.3674603174603,
+   "sec": 501.15390262099993,
+   "rtf": 1.455288203359875,
+   "key": {
+    "onset": {
+     "precision": 0.9970760233918129,
+     "recall": 0.9653220099079972,
+     "f1": 0.9809421071556994,
+     "matched": 4092,
+     "nRef": 4239,
+     "nEst": 4104
+    },
+    "onsetOffset": {
+     "precision": 0.8099415204678363,
+     "recall": 0.7841472045293701,
+     "f1": 0.7968356706220785,
+     "matched": 3324,
+     "nRef": 4239,
+     "nEst": 4104
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9970760233918129,
+     "recall": 0.9653220099079972,
+     "f1": 0.9809421071556994,
+     "matched": 4092,
+     "nRef": 4239,
+     "nEst": 4104
+    },
+    "onsetOffset": {
+     "precision": 0.9651559454191033,
+     "recall": 0.9344184949280491,
+     "f1": 0.9495385352990531,
+     "matched": 3961,
+     "nRef": 4239,
+     "nEst": 4104
+    }
+   }
+  },
+  {
+   "idx": 6,
+   "id": "MIDI-Unprocessed_24_R1_2011_MID--AUDIO_R1-D9_11_Track11_wav",
+   "title": "Frédéric Chopin — Etudes Op. 10 Nos. 9",
+   "dur": 125.80863945578231,
+   "sec": 234.636144174,
+   "rtf": 1.86502409682657,
+   "key": {
+    "onset": {
+     "precision": 0.9983766233766234,
+     "recall": 0.9792993630573248,
+     "f1": 0.9887459807073955,
+     "matched": 1230,
+     "nRef": 1256,
+     "nEst": 1232
+    },
+    "onsetOffset": {
+     "precision": 0.827922077922078,
+     "recall": 0.8121019108280255,
+     "f1": 0.8199356913183281,
+     "matched": 1020,
+     "nRef": 1256,
+     "nEst": 1232
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9983766233766234,
+     "recall": 0.9792993630573248,
+     "f1": 0.9887459807073955,
+     "matched": 1230,
+     "nRef": 1256,
+     "nEst": 1232
+    },
+    "onsetOffset": {
+     "precision": 0.9358766233766234,
+     "recall": 0.9179936305732485,
+     "f1": 0.9268488745980706,
+     "matched": 1153,
+     "nRef": 1256,
+     "nEst": 1232
+    }
+   }
+  },
+  {
+   "idx": 7,
+   "id": "MIDI-Unprocessed_R1_D1-9-12_mid--AUDIO-from_mp3_11_R1_2015_wav--5",
+   "title": "Sergei Rachmaninoff — Prelude Op. 32 No. 8 in A Minor",
+   "dur": 110.90521541950113,
+   "sec": 218.5263564559999,
+   "rtf": 1.9703884585537272,
+   "key": {
+    "onset": {
+     "precision": 0.9992753623188406,
+     "recall": 0.985,
+     "f1": 0.9920863309352518,
+     "matched": 1379,
+     "nRef": 1400,
+     "nEst": 1380
+    },
+    "onsetOffset": {
+     "precision": 0.9318840579710145,
+     "recall": 0.9185714285714286,
+     "f1": 0.925179856115108,
+     "matched": 1286,
+     "nRef": 1400,
+     "nEst": 1380
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9992753623188406,
+     "recall": 0.985,
+     "f1": 0.9920863309352518,
+     "matched": 1379,
+     "nRef": 1400,
+     "nEst": 1380
+    },
+    "onsetOffset": {
+     "precision": 0.9601449275362319,
+     "recall": 0.9464285714285714,
+     "f1": 0.9532374100719425,
+     "matched": 1325,
+     "nRef": 1400,
+     "nEst": 1380
+    }
+   }
+  },
+  {
+   "idx": 8,
+   "id": "MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_03_R2_2015_wav--1",
+   "title": "Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+   "dur": 114.94687074829932,
+   "sec": 197.70227030700002,
+   "rtf": 1.7199447798793175,
+   "key": {
+    "onset": {
+     "precision": 0.9874888293118856,
+     "recall": 0.9954954954954955,
+     "f1": 0.9914759982054734,
+     "matched": 1105,
+     "nRef": 1110,
+     "nEst": 1119
+    },
+    "onsetOffset": {
+     "precision": 0.7765862377122431,
+     "recall": 0.7828828828828829,
+     "f1": 0.7797218483624945,
+     "matched": 869,
+     "nRef": 1110,
+     "nEst": 1119
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9874888293118856,
+     "recall": 0.9954954954954955,
+     "f1": 0.9914759982054734,
+     "matched": 1105,
+     "nRef": 1110,
+     "nEst": 1119
+    },
+    "onsetOffset": {
+     "precision": 0.9490616621983914,
+     "recall": 0.9567567567567568,
+     "f1": 0.9528936742934051,
+     "matched": 1062,
+     "nRef": 1110,
+     "nEst": 1119
+    }
+   }
+  },
+  {
+   "idx": 9,
+   "id": "MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_06_R2_2015_wav--1",
+   "title": "Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+   "dur": 355.4208390022676,
+   "sec": 635.2526112679998,
+   "rtf": 1.7873251693718128,
+   "key": {
+    "onset": {
+     "precision": 0.9974220764002812,
+     "recall": 0.9874709976798144,
+     "f1": 0.9924215926314562,
+     "matched": 4256,
+     "nRef": 4310,
+     "nEst": 4267
+    },
+    "onsetOffset": {
+     "precision": 0.8380595265994845,
+     "recall": 0.8296983758700696,
+     "f1": 0.8338579923050016,
+     "matched": 3576,
+     "nRef": 4310,
+     "nEst": 4267
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9974220764002812,
+     "recall": 0.9874709976798144,
+     "f1": 0.9924215926314562,
+     "matched": 4256,
+     "nRef": 4310,
+     "nEst": 4267
+    },
+    "onsetOffset": {
+     "precision": 0.9660182798218889,
+     "recall": 0.9563805104408353,
+     "f1": 0.9611752360965373,
+     "matched": 4122,
+     "nRef": 4310,
+     "nEst": 4267
+    }
+   }
+  },
+  {
+   "idx": 10,
+   "id": "MIDI-Unprocessed_R2_D2-19-21-22_mid--AUDIO-from_mp3_19_R2_2015_wav--3",
+   "title": "Franz Schubert — Impromptu Op. 90 No. 4 in A-flat Major",
+   "dur": 369.2937641723356,
+   "sec": 592.0328093580002,
+   "rtf": 1.603148676731299,
+   "key": {
+    "onset": {
+     "precision": 0.9990861320539182,
+     "recall": 0.9882485875706215,
+     "f1": 0.9936378095887298,
+     "matched": 4373,
+     "nRef": 4425,
+     "nEst": 4377
+    },
+    "onsetOffset": {
+     "precision": 0.8551519305460361,
+     "recall": 0.8458757062146892,
+     "f1": 0.8504885253351511,
+     "matched": 3743,
+     "nRef": 4425,
+     "nEst": 4377
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9990861320539182,
+     "recall": 0.9882485875706215,
+     "f1": 0.9936378095887298,
+     "matched": 4373,
+     "nRef": 4425,
+     "nEst": 4377
+    },
+    "onsetOffset": {
+     "precision": 0.9705277587388622,
+     "recall": 0.96,
+     "f1": 0.9652351738241309,
+     "matched": 4248,
+     "nRef": 4425,
+     "nEst": 4377
+    }
+   }
+  },
+  {
+   "idx": 11,
+   "id": "MIDI-Unprocessed_SMF_17_R1_2004_03-06_ORIG_MID--AUDIO_20_R2_2004_12_Track12_wav--1",
+   "title": "Claude Debussy — Etude No. 7 \"Study in Chromatic Steps\"",
+   "dur": 135.44190476190477,
+   "sec": 328.06769904700013,
+   "rtf": 2.422202342943382,
+   "key": {
+    "onset": {
+     "precision": 0.9983922829581994,
+     "recall": 0.9820769636267791,
+     "f1": 0.9901674196120117,
+     "matched": 1863,
+     "nRef": 1897,
+     "nEst": 1866
+    },
+    "onsetOffset": {
+     "precision": 0.9078242229367631,
+     "recall": 0.8929889298892989,
+     "f1": 0.9003454690406592,
+     "matched": 1694,
+     "nRef": 1897,
+     "nEst": 1866
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 0.9983922829581994,
+     "recall": 0.9820769636267791,
+     "f1": 0.9901674196120117,
+     "matched": 1863,
+     "nRef": 1897,
+     "nEst": 1866
+    },
+    "onsetOffset": {
+     "precision": 0.9212218649517685,
+     "recall": 0.9061676331049024,
+     "f1": 0.9136327398352379,
+     "matched": 1719,
+     "nRef": 1897,
+     "nEst": 1866
+    }
+   }
+  },
+  {
+   "idx": 12,
+   "id": "ORIG-MIDI_03_7_6_13_Group__MID--AUDIO_09_R1_2013_wav--3",
+   "title": "Wolfgang Amadeus Mozart — Sonata in F Major, K. 280, 1st mov.",
+   "dur": 193.97895691609978,
+   "sec": 313.26042238799994,
+   "rtf": 1.6149196148296232,
+   "key": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9967248908296943,
+     "f1": 0.9983597594313832,
+     "matched": 1826,
+     "nRef": 1832,
+     "nEst": 1826
+    },
+    "onsetOffset": {
+     "precision": 0.911829134720701,
+     "recall": 0.9088427947598253,
+     "f1": 0.9103335155822855,
+     "matched": 1665,
+     "nRef": 1832,
+     "nEst": 1826
+    }
+   },
+   "pedalExtended": {
+    "onset": {
+     "precision": 1,
+     "recall": 0.9967248908296943,
+     "f1": 0.9983597594313832,
+     "matched": 1826,
+     "nRef": 1832,
+     "nEst": 1826
+    },
+    "onsetOffset": {
+     "precision": 0.9633077765607886,
+     "recall": 0.9601528384279476,
+     "f1": 0.9617277200656096,
+     "matched": 1759,
+     "nRef": 1832,
+     "nEst": 1826
+    }
+   }
+  }
+ ]
+}

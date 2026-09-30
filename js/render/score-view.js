@@ -4,9 +4,26 @@ import { spellMidi } from '../analysis/key.js';
 
 const KEY_SIG = ['Cb', 'Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F', 'C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#']; // index = fifths + 7
 const REST_KEY = { treble: 'b/4', bass: 'd/3' };
-const STAVE_GAP = 92; // 오른손 5선 상단 ~ 왼손 5선 상단
-const TOP_PAD = 34;
-const SYSTEM_HEIGHT = TOP_PAD + STAVE_GAP + 40 + 42;
+const STAVE_GAP = 92; // 오른손 오선 영역 상단 ~ 왼손 오선 영역 상단
+
+/**
+ * 한 줄(system)의 세로 배치. VexFlow 오선 영역은 위쪽 여백 40px 뒤에 첫 줄이 오고, 다섯 줄이 40px 를 차지한다.
+ * 운지를 표시하면 위(오른손 화음 번호)·아래(왼손 화음 번호) 여백을 늘리고 페달 표시를 그 아래로 내린다.
+ */
+function layoutFor(score) {
+  const fing = !!score.showFingering;
+  const top = 34 + (fing ? 30 : 0);
+  const trebleTopLine = top + 40;
+  const bassBottomLine = top + STAVE_GAP + 80;
+  const below = fing ? 56 : 0;
+  return {
+    top,
+    trebleTopLine,
+    bassBottomLine,
+    pedalY: bassBottomLine + 30 + below, // 낮은 덧줄 음표(와 운지 번호)를 피한 페달 표시 줄
+    height: bassBottomLine + 46 + below, // 낮은 덧줄 음표(C1 근처)와 페달 표시까지 들어가는 높이
+  };
+}
 
 const nextFrame = () => new Promise((r) => requestAnimationFrame(() => r()));
 
@@ -29,6 +46,9 @@ function buildStaff(VF, pieces, clef, score, wholeRestBar) {
         return `${s.letter}${s.accidental}/${s.octave}`;
       });
       note = new StaveNote({ keys, duration: vfDuration(p.dur, false), clef, autoStem: true });
+      if (p.graces?.length) note.addModifier(graceGroup(VF, p.graces, clef, score.fifths), 0);
+      if (p.ornament === 'trill') note.addModifier(new VF.Ornament('tr'), 0);
+      if (score.showFingering && p.fingers && !p.fingerTied) addFingers(VF, note, p, clef);
     }
     if (!wholeRestBar && DURATION_TYPES[p.dur].dots) Dot.buildAndAttach([note], { all: true });
     map.set(p, note);
@@ -40,6 +60,46 @@ function buildStaff(VF, pieces, clef, score, wholeRestBar) {
   const groups = score.compound ? [new Fraction(3, 8)] : undefined;
   const beams = Beam.generateBeams(notes, { groups, beamRests: false, maintainStemDirections: false });
   return { notes, voice, beams, map };
+}
+
+const SHARP_ORDER = 'fcgdaeb';
+const FLAT_ORDER = 'beadgcf';
+/** 조표가 이 음이름에 붙이는 임시표 */
+function keyAccidental(letter, fifths) {
+  if (fifths > 0) return SHARP_ORDER.indexOf(letter) < fifths ? '#' : '';
+  if (fifths < 0) return FLAT_ORDER.indexOf(letter) < -fifths ? 'b' : '';
+  return '';
+}
+
+/** 앞꾸밈음: 사선 그은 작은 8분음표 묶음 (조표와 다른 음에는 임시표) */
+function graceGroup(VF, midis, clef, fifths) {
+  const notes = midis.map((m) => {
+    const s = spellMidi(m, fifths);
+    const g = new VF.GraceNote({ keys: [`${s.letter}${s.accidental}/${s.octave}`], duration: '8', slash: true, clef });
+    if (s.accidental !== keyAccidental(s.letter, fifths)) g.addModifier(new VF.Accidental(s.accidental || 'n'), 0);
+    return g;
+  });
+  const group = new VF.GraceNoteGroup(notes, true);
+  if (notes.length > 1) group.beamNotes();
+  return group;
+}
+
+/**
+ * 운지 번호: 오른손은 오선 위, 왼손은 오선 아래에 음 높이 순서대로 쌓는다(위쪽 번호 = 높은 음).
+ * 확신도 0.5 미만(비슷하게 좋은 대안이 있는 곳)은 회색.
+ */
+function addFingers(VF, note, piece, clef) {
+  const above = clef === 'treble';
+  const idx = piece.fingers.map((_, i) => i).filter((i) => piece.fingers[i]);
+  // 주석은 먼저 붙인 것이 오선에 가깝다: 위쪽은 낮은 음부터, 아래쪽은 높은 음부터
+  const order = above ? idx : [...idx].reverse();
+  for (const i of order) {
+    const a = new VF.Annotation(String(piece.fingers[i]))
+      .setVerticalJustification(above ? VF.Annotation.VerticalJustify.TOP : VF.Annotation.VerticalJustify.BOTTOM)
+      .setFont('Times New Roman, serif', 11, 'bold');
+    if (piece.fingerConfidence < 0.5) a.setStyle({ fillStyle: '#8b8b96', strokeStyle: '#8b8b96' });
+    note.addModifier(a, 0);
+  }
 }
 
 function isWholeRest(pieces, score) {
@@ -65,6 +125,30 @@ function startModifiersWidth(VF, score, withTime) {
   return s.getNoteStartX();
 }
 
+/** 이 줄에 속한 페달 밟기(Ped.)·떼기(✱) 표시를 왼손 오선 아래에 그린다. x 는 음표 위치 사이를 보간한다. */
+function drawPedals(ctx, score, anchors, idxs, pedalY) {
+  if (!score.pedals?.length || !anchors.length) return;
+  anchors.sort((a, b) => a.unit - b.unit || (a.end ? 1 : 0) - (b.end ? 1 : 0));
+  const from = idxs[0] * score.unitsPerBar;
+  const to = (idxs[idxs.length - 1] + 1) * score.unitsPerBar;
+  const xAt = (u) => {
+    let i = 0;
+    while (i + 1 < anchors.length && anchors[i + 1].unit <= u) i++;
+    const a = anchors[i];
+    const b = anchors[i + 1];
+    if (!b || a.unit === u) return a.x;
+    return a.x + ((u - a.unit) / (b.unit - a.unit)) * (b.x - a.x);
+  };
+  ctx.save();
+  ctx.setFont('Times New Roman, serif', 14, 'bold', 'italic');
+  for (const p of score.pedals) {
+    // 바꿔 밟기(떼기와 밟기가 같은 지점)에서 겹치지 않도록 ✱ 는 왼쪽, Ped. 는 오른쪽으로 비켜 쓴다
+    if (p.start >= from && p.start < to) ctx.fillText('Ped.', xAt(p.start) + 2, pedalY);
+    if (p.end > from && p.end <= to) ctx.fillText('✱', xAt(p.end) - 14, pedalY);
+  }
+  ctx.restore();
+}
+
 /**
  * @param {HTMLElement} container
  * @param {ReturnType<import('../music/score.js').buildScore>} score
@@ -79,6 +163,7 @@ export async function renderScore(container, score, { width = 900, onMeasureClic
   if (!score.measures.length) return { measureEls, systems: 0 };
 
   const margin = 12;
+  const L = layoutFor(score);
   const usable = width - margin * 2;
   const firstPad = startModifiersWidth(VF, score, true);
   const restPad = startModifiersWidth(VF, score, false);
@@ -125,17 +210,18 @@ export async function renderScore(container, score, { width = 900, onMeasureClic
     wrap.appendChild(surface);
 
     const renderer = new VF.Renderer(surface, VF.Renderer.Backends.SVG);
-    renderer.resize(width, SYSTEM_HEIGHT);
+    renderer.resize(width, L.height);
     const ctx = renderer.getContext();
 
     const noteOf = new Map(); // piece → {note, staffKey}
     const staffPieces = { treble: [], bass: [] };
+    const anchors = []; // 페달 표시 위치 계산용 {unit(곡 전체 기준), x}
     let x = margin;
     idxs.forEach((mi, k) => {
       const m = score.measures[mi];
       const w = widths[k];
-      const sT = new VF.Stave(x, TOP_PAD, w);
-      const sB = new VF.Stave(x, TOP_PAD + STAVE_GAP, w);
+      const sT = new VF.Stave(x, L.top, w);
+      const sB = new VF.Stave(x, L.top + STAVE_GAP, w);
       if (k === 0) {
         sT.addClef('treble').addKeySignature(KEY_SIG[score.fifths + 7]);
         sB.addClef('bass').addKeySignature(KEY_SIG[score.fifths + 7]);
@@ -167,6 +253,9 @@ export async function renderScore(container, score, { width = 900, onMeasureClic
       for (const [p, n] of b.map) noteOf.set(p, { note: n, staff: 'bass' });
       staffPieces.treble.push(...m.treble);
       staffPieces.bass.push(...m.bass);
+      const barU = mi * score.unitsPerBar;
+      for (const [p, n] of [...t.map, ...b.map]) anchors.push({ unit: barU + p.start, x: n.getAbsoluteX() });
+      anchors.push({ unit: barU + score.unitsPerBar, x: x + w - 6, end: true });
 
       const link = (type) => new VF.StaveConnector(sT, sB).setType(type).setContext(ctx).draw();
       if (k === 0) {
@@ -180,8 +269,8 @@ export async function renderScore(container, score, { width = 900, onMeasureClic
       ov.className = 'measure-overlay';
       ov.style.left = `${(x / width) * 100}%`;
       ov.style.width = `${(w / width) * 100}%`;
-      ov.style.top = `${((TOP_PAD - 14) / SYSTEM_HEIGHT) * 100}%`;
-      ov.style.height = `${((STAVE_GAP + 40 + 28) / SYSTEM_HEIGHT) * 100}%`;
+      ov.style.top = `${((L.trebleTopLine - 24) / L.height) * 100}%`;
+      ov.style.height = `${((L.bassBottomLine - L.trebleTopLine + 48) / L.height) * 100}%`;
       ov.dataset.measure = String(mi);
       ov.title = `${mi + 1}마디`;
       if (onMeasureClick) ov.addEventListener('click', () => onMeasureClick(mi));
@@ -209,9 +298,11 @@ export async function renderScore(container, score, { width = 900, onMeasureClic
       });
     }
 
+    drawPedals(ctx, score, anchors, idxs, L.pedalY);
+
     const svg = surface.querySelector('svg');
     if (svg) {
-      svg.setAttribute('viewBox', `0 0 ${width} ${SYSTEM_HEIGHT}`);
+      svg.setAttribute('viewBox', `0 0 ${width} ${L.height}`);
       svg.removeAttribute('width');
       svg.removeAttribute('height');
       svg.setAttribute('role', 'img');

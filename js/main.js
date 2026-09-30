@@ -1,5 +1,5 @@
 // 앱 진입점: 입력 → 분석(워커) → 리듬/조성 추정 → 악보 생성 → 렌더링/재생/내보내기
-import { decodeAudio, sliceSamples, normalize, cropBuffer, ANALYSIS_RATE } from './audio/decode.js';
+import { decodeAudio, sliceSamples, normalize, cropBuffer, toChannels44k } from './audio/decode.js';
 import { canRecord, startRecording } from './audio/recorder.js';
 import { Player } from './audio/player.js';
 import { renderWav } from './audio/piano.js';
@@ -8,6 +8,8 @@ import { trackBeats, fixedTempoGrid, BeatGrid, chooseDownbeatPhase } from './ana
 import { detectKey, keyNameKo, keyFifths } from './analysis/key.js';
 import { buildScore, TIME_SIGNATURES, meterInfo, scoreToPlayback, unitToOriginalSeconds } from './music/score.js';
 import { scoreToMidi } from './music/midi.js';
+import { applyFingering } from './music/fingering.js';
+import { checkPipeline } from './validate/pipeline-check.js';
 import { scoreToMusicXml } from './music/musicxml.js';
 import { renderScore } from './render/score-view.js';
 import { PianoRoll } from './render/pianoroll.js';
@@ -19,7 +21,7 @@ const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 
 const noteName = (m) => `${NOTE_NAMES[m % 12]}${Math.floor(m / 12) - 1}`;
 
 const settings = {
-  engine: 'ml',
+  engine: 'piano',
   sensitivity: 0.5,
   timeSig: '4/4',
   bpm: null, // null = 자동
@@ -29,6 +31,9 @@ const settings = {
   minVel: 0,
   maxChord: 4,
   legato: true,
+  pedal: true,
+  ornaments: true,
+  fingering: true,
   shift: 0,
 };
 
@@ -44,6 +49,7 @@ const state = {
   segBuffer: null,
   busy: false,
   recorder: null,
+  engineAutoSwitched: false, // 예시 곡 때문에 엔진을 범용 AI 로 자동 전환했는지
 };
 
 const player = new Player();
@@ -101,6 +107,11 @@ async function handleFile(file) {
 }
 
 async function useAudio(audio) {
+  // 예시 곡 때문에 자동으로 범용 AI 로 바꿨다면, 사용자의 새 음원은 다시 기본(피아노 전용)으로 분석한다
+  if (!audio.isDemo && state.engineAutoSwitched) {
+    document.querySelector('input[name="engine"][value="piano"]').checked = true;
+    state.engineAutoSwitched = false;
+  }
   state.audio = audio;
   const end = Math.min(audio.duration, MAX_DEFAULT_SEC);
   state.seg = { start: 0, end: Math.ceil(end) };
@@ -129,18 +140,26 @@ async function runAnalysis() {
     setProgress(0.03, '준비 중…');
     const samples = normalize(sliceSamples(state.audio.samples, start, end));
     state.segBuffer = cropBuffer(state.audio.playback, start, end);
-    const result = await analyze(samples, {
+    const channels = settings.engine === 'piano' ? await toChannels44k(state.segBuffer) : undefined;
+    const result = await analyze({ samples, channels }, {
       engine: settings.engine,
       sensitivity: settings.sensitivity,
       onProgress: (v, label) => setProgress(v, `${label} ${Math.round(v * 100)}%`),
     });
+    result.pedals ??= [];
     state.result = result;
+    window.__lastAnalysis = { engine: result.engine, notes: result.notes, pedals: result.pedals }; // E2E 테스트가 정답과 비교할 때 사용
     $('progress').hidden = true;
     $('result').hidden = false;
+    const demoNote = state.audio.isDemo && result.engine === 'ml' ? '예시 곡은 합성한 소리라, 실제 피아노 녹음으로 학습된 피아노 전용 엔진 대신 범용 AI로 분석했습니다.' : null;
+    const notes = [result.note, demoNote].filter(Boolean);
     const note = $('engine-note');
-    note.hidden = !result.note;
-    note.textContent = result.note ?? '';
+    note.hidden = !notes.length;
+    note.textContent = notes.join(' ');
+    const density = result.notes.length / Math.max(1, end - start);
     if (!result.notes.length) showBanner('음을 찾지 못했어요. 민감도를 높이거나 분석 구간을 바꿔 다시 시도해 보세요.', 'info');
+    else if (result.engine === 'piano' && density < 0.8 && end - start > 8)
+      showBanner('찾은 음이 매우 적습니다. 피아노 독주가 아닌 음악(노래·밴드·합성음)이면 「분석 설정」에서 범용 AI 엔진으로 다시 분석해 보세요.', 'info');
     computeRhythmAndKey(true);
     player.setOriginal(state.segBuffer);
     await rebuild();
@@ -205,8 +224,13 @@ async function rebuild({ retrack = false } = {}) {
     legato: settings.legato,
     maxChord: settings.maxChord,
     minVelocity: settings.minVel,
+    pedals: settings.pedal ? state.result.pedals.filter((p) => p.type === 'sustain') : [],
+    ornaments: settings.ornaments,
   });
+  state.fingerSummary = settings.fingering ? applyFingering(state.score) : null;
+  state.score.showFingering = settings.fingering;
   updateSummary();
+  updateCheck();
   updatePlayerData();
   await paintScore();
 }
@@ -215,7 +239,12 @@ function updateSummary() {
   const { score, result, beat } = state;
   const key = currentKey();
   const meter = meterInfo(TIME_SIGNATURES[settings.timeSig]);
-  const engineName = result.engine === 'ml' ? `AI 정밀${result.backend ? ` (${result.backend === 'webgl' ? 'GPU' : 'CPU'})` : ''}` : '내장 빠른 분석';
+  const engineName =
+    result.engine === 'piano'
+      ? `피아노 전용 AI (CPU ${result.threads ?? 1}스레드)`
+      : result.engine === 'ml'
+        ? `범용 AI${result.backend ? ` (${result.backend === 'webgl' ? 'GPU' : 'CPU'})` : ''}`
+        : '내장 빠른 분석';
   const bpmText = meter.compound ? `♩.=${Math.round(beat.bpm)}` : `♩=${Math.round(beat.bpm)}`;
   const items = [
     ['분석 엔진', engineName],
@@ -225,6 +254,11 @@ function updateSummary() {
     ['박자', settings.timeSig],
     ['조성', keyNameKo(key.tonic, key.mode)],
     ['마디 수', `${score.measures.length}`],
+    ...(result.pedals.length ? [['페달', `${score.pedals.length}회`]] : []),
+    ...(score.ornaments.length
+      ? [['꾸밈음', `앞꾸밈음 ${score.ornaments.filter((o) => o.type === 'grace').length} · 트릴 ${score.ornaments.filter((o) => o.type === 'trill').length}`]]
+      : []),
+    ...(state.fingerSummary ? [['운지 제안 확신도', `평균 ${Math.round(state.fingerSummary.mean * 100)}%`]] : []),
   ];
   const ul = $('chips');
   ul.replaceChildren();
@@ -239,6 +273,37 @@ function updateSummary() {
   const title = baseName(state.audio.name);
   $('paper-title').textContent = title;
   $('paper-meta').textContent = `${keyNameKo(key.tonic, key.mode)} · ${settings.timeSig} · ${bpmText} · 피아노 자동 전사`;
+}
+
+/** 메타 검증 결과 표시 */
+function updateCheck() {
+  let r;
+  try {
+    r = checkPipeline({ transcribed: state.result.notes, score: state.score, grid: state.grid, minVelocity: settings.minVel });
+  } catch (err) {
+    r = { checks: [{ stage: '검증', name: '실행', status: 'error', detail: err.message }], errors: 1, warnings: 0 };
+  }
+  const mark = { ok: '✓', warn: '!', error: '✕' };
+  $('check-summary').textContent = `검증 리포트 — ${r.errors ? `오류 ${r.errors} · ` : ''}경고 ${r.warnings} · 통과 ${r.checks.length - r.errors - r.warnings}`;
+  const list = $('check-list');
+  list.replaceChildren();
+  for (const c of r.checks) {
+    const li = document.createElement('li');
+    li.className = c.status;
+    const st = document.createElement('span');
+    st.className = 'st';
+    st.textContent = mark[c.status];
+    st.setAttribute('aria-label', { ok: '통과', warn: '경고', error: '오류' }[c.status]);
+    const nm = document.createElement('span');
+    nm.className = 'nm';
+    nm.textContent = `${c.stage} · ${c.name}`;
+    const dt = document.createElement('span');
+    dt.className = 'dt';
+    dt.textContent = c.detail;
+    li.append(st, nm, dt);
+    list.append(li);
+  }
+  if (r.errors) $('check').open = true;
 }
 
 function updatePlayerData() {
@@ -375,7 +440,13 @@ function bindControls() {
       showBanner('');
       setProgress(0.03, '예시 곡을 만드는 중…');
       const demo = await renderDemo();
-      await useAudio({ ...demo, name: '환희의 송가 (예시).wav' });
+      // 합성음은 피아노 전용 엔진의 학습 범위 밖이라 범용 AI 를 선택해 둔다 (사용자가 바꿔 다시 분석할 수 있음)
+      const general = document.querySelector('input[name="engine"][value="ml"]');
+      if (!general.checked) {
+        general.checked = true;
+        state.engineAutoSwitched = true;
+      }
+      await useAudio({ ...demo, name: '환희의 송가 (예시).wav', isDemo: true });
     } catch (err) {
       $('progress').hidden = true;
       showBanner(err.message || String(err));
@@ -419,6 +490,7 @@ function bindControls() {
 
   $('sens').addEventListener('input', (e) => ($('sens-out').textContent = sensLabel(Number(e.target.value))));
   $('btn-analyze').addEventListener('click', () => runAnalysis());
+  for (const r of document.querySelectorAll('input[name="engine"]')) r.addEventListener('change', () => (state.engineAutoSwitched = false)); // 사용자가 직접 고른 엔진은 유지
   $('btn-cancel').addEventListener('click', () => {
     // busy 는 분석 Promise 가 완전히 끝날 때(runAnalysis 의 finally)까지 유지한다
     cancelAnalysis();
@@ -486,6 +558,18 @@ function bindControls() {
     settings.legato = e.target.checked;
     apply();
   });
+  $('pedal').addEventListener('change', (e) => {
+    settings.pedal = e.target.checked;
+    apply();
+  });
+  $('ornaments').addEventListener('change', (e) => {
+    settings.ornaments = e.target.checked;
+    apply();
+  });
+  $('fingering').addEventListener('change', (e) => {
+    settings.fingering = e.target.checked;
+    apply();
+  });
   const bpb = () => meterInfo(TIME_SIGNATURES[settings.timeSig]).beatsPerBar;
   $('shift-next').addEventListener('click', () => {
     settings.shift = (settings.shift + 1) % bpb();
@@ -525,7 +609,7 @@ function bindControls() {
     download(new Blob([bytes], { type: 'audio/midi' }), `${fileBase()}.mid`);
   });
   $('dl-xml').addEventListener('click', () => {
-    const xml = scoreToMusicXml(state.score, { title: fileBase() });
+    const xml = scoreToMusicXml(state.score, { title: fileBase(), fingering: settings.fingering });
     download(new Blob([xml], { type: 'application/vnd.recordare.musicxml+xml' }), `${fileBase()}.musicxml`);
   });
   $('dl-wav').addEventListener('click', (e) =>

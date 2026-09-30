@@ -16,10 +16,12 @@ const TYPES = {
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
   '.wav': 'audio/wav',
+  '.wasm': 'application/wasm',
+  '.onnx': 'application/octet-stream',
   '.md': 'text/plain; charset=utf-8',
 };
 
-export function createServer() {
+export function createServer({ coi = !process.env.NO_COI } = {}) {
   return http.createServer(async (req, res) => {
     try {
       let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
@@ -36,7 +38,13 @@ export function createServer() {
       const s = await stat(file);
       if (!s.isFile()) throw new Error('not a file');
       const body = await readFile(file);
-      res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] ?? 'application/octet-stream', 'Cache-Control': 'no-cache' });
+      res.writeHead(200, {
+        'Content-Type': TYPES[path.extname(file)] ?? 'application/octet-stream',
+        'Cache-Control': 'no-cache',
+        // 교차 출처 격리: ONNX Runtime 의 WASM 멀티스레드(SharedArrayBuffer)에 필요.
+        // NO_COI=1 이면 빼서, 헤더를 못 바꾸는 정적 호스팅(서비스 워커 경로)을 흉내 낸다.
+        ...(coi ? { 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Embedder-Policy': 'require-corp' } : {}),
+      });
       res.end(body);
     } catch {
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('not found');

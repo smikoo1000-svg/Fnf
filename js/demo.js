@@ -1,6 +1,6 @@
 // 체험용 곡: 베토벤 「환희의 송가」(저작권 만료) 멜로디 + 단순 반주. 앱 내 피아노 합성기로 오디오를 만든다.
 import { schedulePiano } from './audio/piano.js';
-import { ANALYSIS_RATE } from './audio/decode.js';
+import { fromAudioBuffer } from './audio/decode.js';
 
 const MELODY = [
   [64, 1], [64, 1], [65, 1], [67, 1], [67, 1], [65, 1], [64, 1], [62, 1], [60, 1], [60, 1], [62, 1], [64, 1], [64, 1.5], [62, 0.5], [62, 2],
@@ -27,8 +27,7 @@ export function demoNotes(bpm = 100) {
 export async function renderDemo() {
   const notes = demoNotes();
   const total = Math.max(...notes.map((n) => n.time + n.dur)) + 2.5;
-  const ctx = new OfflineAudioContext(1, Math.ceil(total * ANALYSIS_RATE), ANALYSIS_RATE);
+  const ctx = new OfflineAudioContext(1, Math.ceil(total * 44100), 44100);
   schedulePiano(ctx, notes);
-  const buf = await ctx.startRendering();
-  return { samples: buf.getChannelData(0).slice(), playback: buf, duration: buf.duration };
+  return fromAudioBuffer(await ctx.startRendering());
 }

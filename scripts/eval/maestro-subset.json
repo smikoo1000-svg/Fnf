@@ -1,0 +1,106 @@
+[
+ {
+  "id": "MIDI-Unprocessed_02_R1_2011_MID--AUDIO_R1-D1_10_Track10_wav",
+  "composer": "Franz Liszt",
+  "title": "Concert Etude No. 2, \"Gnomenreigen\", S. 145/2",
+  "audio": "2011/MIDI-Unprocessed_02_R1_2011_MID--AUDIO_R1-D1_10_Track10_wav.wav",
+  "midi": "2011/MIDI-Unprocessed_02_R1_2011_MID--AUDIO_R1-D1_10_Track10_wav.midi",
+  "duration": 155.0
+ },
+ {
+  "id": "MIDI-Unprocessed_04_R2_2008_01-04_ORIG_MID--AUDIO_04_R2_2008_wav--3",
+  "composer": "Franz Schubert",
+  "title": "Impromptu Op. 90 No. 4 in A-flat Major",
+  "audio": "2008/MIDI-Unprocessed_04_R2_2008_01-04_ORIG_MID--AUDIO_04_R2_2008_wav--3.wav",
+  "midi": "2008/MIDI-Unprocessed_04_R2_2008_01-04_ORIG_MID--AUDIO_04_R2_2008_wav--3.midi",
+  "duration": 400.7
+ },
+ {
+  "id": "MIDI-Unprocessed_05_R1_2011_MID--AUDIO_R1-D2_10_Track10_wav",
+  "composer": "Joseph Haydn",
+  "title": "Sonata in G Major, Hob. XVI:6, First Movement",
+  "audio": "2011/MIDI-Unprocessed_05_R1_2011_MID--AUDIO_R1-D2_10_Track10_wav.wav",
+  "midi": "2011/MIDI-Unprocessed_05_R1_2011_MID--AUDIO_R1-D2_10_Track10_wav.midi",
+  "duration": 186.9
+ },
+ {
+  "id": "MIDI-Unprocessed_09_R3_2008_01-07_ORIG_MID--AUDIO_09_R3_2008_wav--2",
+  "composer": "Domenico Scarlatti",
+  "title": "Sonata K. 525",
+  "audio": "2008/MIDI-Unprocessed_09_R3_2008_01-07_ORIG_MID--AUDIO_09_R3_2008_wav--2.wav",
+  "midi": "2008/MIDI-Unprocessed_09_R3_2008_01-07_ORIG_MID--AUDIO_09_R3_2008_wav--2.midi",
+  "duration": 65.9
+ },
+ {
+  "id": "MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--1",
+  "composer": "Domenico Scarlatti",
+  "title": "Sonata in D Minor, K. 9 L. 413",
+  "audio": "2008/MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--1.wav",
+  "midi": "2008/MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--1.midi",
+  "duration": 96.0
+ },
+ {
+  "id": "MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--4",
+  "composer": "Franz Schubert",
+  "title": "Impromptu Op. 90 No. 4 in A-flat Major",
+  "audio": "2008/MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--4.wav",
+  "midi": "2008/MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--4.midi",
+  "duration": 342.5
+ },
+ {
+  "id": "MIDI-Unprocessed_24_R1_2011_MID--AUDIO_R1-D9_11_Track11_wav",
+  "composer": "Frédéric Chopin",
+  "title": "Etudes Op. 10 Nos. 9",
+  "audio": "2011/MIDI-Unprocessed_24_R1_2011_MID--AUDIO_R1-D9_11_Track11_wav.wav",
+  "midi": "2011/MIDI-Unprocessed_24_R1_2011_MID--AUDIO_R1-D9_11_Track11_wav.midi",
+  "duration": 124.8
+ },
+ {
+  "id": "MIDI-Unprocessed_R1_D1-9-12_mid--AUDIO-from_mp3_11_R1_2015_wav--5",
+  "composer": "Sergei Rachmaninoff",
+  "title": "Prelude Op. 32 No. 8 in A Minor",
+  "audio": "2015/MIDI-Unprocessed_R1_D1-9-12_mid--AUDIO-from_mp3_11_R1_2015_wav--5.wav",
+  "midi": "2015/MIDI-Unprocessed_R1_D1-9-12_mid--AUDIO-from_mp3_11_R1_2015_wav--5.midi",
+  "duration": 109.9
+ },
+ {
+  "id": "MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_03_R2_2015_wav--1",
+  "composer": "Franz Schubert",
+  "title": "Impromptu Op. 90 No. 4 in A-flat Major",
+  "audio": "2015/MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_03_R2_2015_wav--1.wav",
+  "midi": "2015/MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_03_R2_2015_wav--1.midi",
+  "duration": 112.9
+ },
+ {
+  "id": "MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_06_R2_2015_wav--1",
+  "composer": "Franz Schubert",
+  "title": "Impromptu Op. 90 No. 4 in A-flat Major",
+  "audio": "2015/MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_06_R2_2015_wav--1.wav",
+  "midi": "2015/MIDI-Unprocessed_R2_D1-2-3-6-7-8-11_mid--AUDIO-from_mp3_06_R2_2015_wav--1.midi",
+  "duration": 354.2
+ },
+ {
+  "id": "MIDI-Unprocessed_R2_D2-19-21-22_mid--AUDIO-from_mp3_19_R2_2015_wav--3",
+  "composer": "Franz Schubert",
+  "title": "Impromptu Op. 90 No. 4 in A-flat Major",
+  "audio": "2015/MIDI-Unprocessed_R2_D2-19-21-22_mid--AUDIO-from_mp3_19_R2_2015_wav--3.wav",
+  "midi": "2015/MIDI-Unprocessed_R2_D2-19-21-22_mid--AUDIO-from_mp3_19_R2_2015_wav--3.midi",
+  "duration": 366.9
+ },
+ {
+  "id": "MIDI-Unprocessed_SMF_17_R1_2004_03-06_ORIG_MID--AUDIO_20_R2_2004_12_Track12_wav--1",
+  "composer": "Claude Debussy",
+  "title": "Etude No. 7 \"Study in Chromatic Steps\"",
+  "audio": "2004/MIDI-Unprocessed_SMF_17_R1_2004_03-06_ORIG_MID--AUDIO_20_R2_2004_12_Track12_wav--1.wav",
+  "midi": "2004/MIDI-Unprocessed_SMF_17_R1_2004_03-06_ORIG_MID--AUDIO_20_R2_2004_12_Track12_wav--1.midi",
+  "duration": 134.4
+ },
+ {
+  "id": "ORIG-MIDI_03_7_6_13_Group__MID--AUDIO_09_R1_2013_wav--3",
+  "composer": "Wolfgang Amadeus Mozart",
+  "title": "Sonata in F Major, K. 280, 1st mov.",
+  "audio": "2013/ORIG-MIDI_03_7_6_13_Group__MID--AUDIO_09_R1_2013_wav--3.wav",
+  "midi": "2013/ORIG-MIDI_03_7_6_13_Group__MID--AUDIO_09_R1_2013_wav--3.midi",
+  "duration": 192.6
+ }
+]

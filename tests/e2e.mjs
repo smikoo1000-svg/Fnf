@@ -113,11 +113,15 @@ try {
   fs.writeFileSync(wavPath, encodeWav(samples, 22050));
   await page.goto(base);
   assert.match(await page.title(), /피아노 악보 변환기/);
+  assert.ok(await page.isChecked('input[name="engine"][value="piano"]'), '기본 엔진은 피아노 전용 AI');
+  // 합성음은 피아노 전용 엔진의 학습 범위 밖이므로 앱 안내대로 범용 AI 로 분석한다
+  await page.evaluate(() => document.querySelector('#analysis-settings').setAttribute('open', ''));
+  await page.check('input[name="engine"][value="ml"]');
   await page.setInputFiles('#file', wavPath);
   await waitResult();
   let c = await chips();
   assert.equal(await bannerText(), '', '오류 배너가 없어야 함');
-  assert.match(c['분석 엔진'], /AI 정밀/, 'AI 엔진으로 분석되어야 함');
+  assert.match(c['분석 엔진'], /범용 AI/, '범용 AI 엔진으로 분석되어야 함');
   const bpm = Number(c['템포'].replace(/[^0-9]/g, ''));
   assert.ok(Math.abs(bpm - 100) <= 4, `템포 100 근처여야 함 (실제 ${bpm})`);
   assert.match(c['조성'], /다장조/);
@@ -126,6 +130,20 @@ try {
   assert.ok((await page.$$eval('.system svg', (l) => l.length)) >= 2, '악보 줄이 2개 이상');
   ok(`AI 분석 완료: ${JSON.stringify(c)}`);
   await page.screenshot({ path: path.join(outDir, 'e2e-result.png'), fullPage: true });
+
+  step('검증 리포트 · 운지 · 꾸밈음/페달 설정');
+  const checkSummary = await page.textContent('#check-summary');
+  assert.ok(!/오류/.test(checkSummary), `메타 검증 오류가 없어야 함: ${checkSummary}`);
+  assert.ok((await page.$$eval('#check-list li', (l) => l.length)) >= 8, '검증 항목 8개 이상');
+  ok(`메타 검증: ${checkSummary}`);
+  const fingerTexts = await page.$$eval('.system svg text', (l) => l.filter((t) => /^[1-5]$/.test(t.textContent.trim())).length);
+  assert.ok(fingerTexts > 20, `운지 번호가 악보에 표시되어야 함 (${fingerTexts})`);
+  await page.uncheck('#fingering');
+  await page.waitForFunction(() => ![...document.querySelectorAll('#chips li')].some((li) => li.textContent.includes('운지')), null, { timeout: 30000 });
+  await page.waitForFunction(() => [...document.querySelectorAll('.system svg text')].filter((t) => /^[1-5]$/.test(t.textContent.trim())).length === 0, null, { timeout: 30000 });
+  await page.check('#fingering');
+  await page.waitForFunction(() => [...document.querySelectorAll('#chips li')].some((li) => li.textContent.includes('운지')), null, { timeout: 30000 });
+  ok(`운지 제안 표시/숨김 동작 (번호 ${fingerTexts}개)`);
 
   /* ---------- 2. MIDI 정확도(앱 전체) ---------- */
   step('내려받은 MIDI를 정답과 비교');
@@ -158,6 +176,7 @@ try {
   const [dlXml] = await Promise.all([page.waitForEvent('download'), page.click('#dl-xml')]);
   const xml = fs.readFileSync(await dlXml.path(), 'utf8');
   assert.match(xml, /<score-partwise/);
+  assert.match(xml, /<fingering>[1-5]<\/fingering>/, 'MusicXML 에 운지가 기록되어야 함');
   assert.equal((xml.match(/<measure /g) ?? []).length, nMeasures);
   const xmlOk = await page.evaluate((x) => {
     const d = new DOMParser().parseFromString(x, 'application/xml');
@@ -224,6 +243,47 @@ try {
   ok('390px 폭에서 가로 넘침 없음');
   await page.setViewportSize({ width: 1100, height: 1000 });
 
+  /* ---------- 6b. 피아노 전용 AI (Transkun) ---------- */
+  step('피아노 전용 AI (Transkun) — 실제 피아노 녹음');
+  await page.evaluate(() => document.querySelector('#analysis-settings').setAttribute('open', ''));
+  await page.check('input[name="engine"][value="piano"]');
+  const maestroWav = path.join(here, '..', 'data', 'maestro', 'MIDI-Unprocessed_09_R3_2008_01-07_ORIG_MID--AUDIO_09_R3_2008_wav--2.wav');
+  if (fs.existsSync(maestroWav)) {
+    // MAESTRO 테스트 세트(스카를라티 K.525) 앞 20초를 잘라 올리고, 브라우저 안 전사 결과를 정답 MIDI 와 비교한다
+    const secs = 20;
+    const src = fs.readFileSync(maestroWav);
+    let p = 12;
+    while (src.toString('ascii', p, p + 4) !== 'data') p += 8 + src.readUInt32LE(p + 4);
+    const bytes = Math.min(src.readUInt32LE(p + 4), secs * 44100 * 4);
+    const cut = Buffer.concat([src.subarray(0, p + 8), src.subarray(p + 8, p + 8 + bytes)]);
+    cut.writeUInt32LE(cut.length - 8, 4);
+    cut.writeUInt32LE(bytes, p + 4);
+    const cutPath = path.join(os.tmpdir(), 'e2e-maestro20.wav');
+    fs.writeFileSync(cutPath, cut);
+    await page.setInputFiles('#file', cutPath);
+    await page.waitForFunction(() => window.__lastAnalysis?.engine === 'piano' && document.querySelector('#progress').hidden, null, { timeout: 600000 });
+    await page.waitForSelector('.measure-overlay');
+    c = await chips();
+    assert.match(c['분석 엔진'], /피아노 전용 AI/);
+    const est = await page.evaluate(() => window.__lastAnalysis.notes.map((n) => ({ start: n.start, end: n.end, pitch: n.midi })));
+    const { parseMidiFile } = await import('../js/eval/midi-read.js');
+    const { transcriptionReport } = await import('../js/eval/metrics.js');
+    const gt = parseMidiFile(new Uint8Array(fs.readFileSync(maestroWav.replace('.wav', '.midi'))));
+    const inWin = (ns) => ns.filter((n) => n.start < secs - 1 && n.end < secs - 0.05);
+    const rep = transcriptionReport(inWin(gt.notes), inWin(est));
+    console.log(`  브라우저 안 Transkun, MAESTRO 20초: onset F1 ${rep.onset.f1.toFixed(4)}, onset+offset F1 ${rep.onsetOffset.f1.toFixed(4)} (${rep.onset.nEst}/${rep.onset.nRef}음)`);
+    assert.ok(rep.onset.f1 >= 0.95, `onset F1 0.95 이상 (실제 ${rep.onset.f1.toFixed(4)})`);
+    assert.ok(c['페달'], '페달이 인식되어야 함');
+    assert.ok((await page.$$eval('.system svg text', (l) => l.filter((t) => t.textContent.includes('Ped.')).length)) > 0, '악보에 Ped. 표시');
+    assert.ok(!/오류/.test(await page.textContent('#check-summary')), '메타 검증 오류 없음');
+    ok(`실제 피아노 녹음 전사·악보·검증 통과 (${JSON.stringify(c)})`);
+  } else {
+    console.log('  (data/maestro 가 없어 실제 녹음 정확도 확인은 건너뜀 — scripts/eval/fetch_maestro.py)');
+    await page.setInputFiles('#file', wavPath);
+    await page.waitForFunction(() => window.__lastAnalysis?.engine === 'piano' && document.querySelector('#progress').hidden, null, { timeout: 600000 });
+    ok('피아노 전용 AI 가 합성음에서도 오류 없이 동작');
+  }
+
   /* ---------- 7. 내장 엔진 ---------- */
   step('내장 빠른 분석 엔진');
   await page.evaluate(() => document.querySelector('#analysis-settings').setAttribute('open', ''));
@@ -275,6 +335,18 @@ try {
   await page.waitForSelector('#banner:not([hidden])');
   assert.match(await page.textContent('#banner'), /해석할 수 없습니다/);
   ok('친절한 오류 메시지 표시');
+  /* ---------- 10. 정적 호스팅(헤더 없음)에서 서비스 워커로 멀티스레드 ---------- */
+  step('헤더를 못 바꾸는 정적 호스팅 흉내 (서비스 워커)');
+  const plain = createServer({ coi: false }).listen(0);
+  await new Promise((r) => plain.once('listening', r));
+  const ctx2 = await browser.newContext();
+  const p2 = await ctx2.newPage();
+  await p2.goto(`http://localhost:${plain.address().port}/`);
+  await p2.waitForFunction(() => self.crossOriginIsolated, null, { timeout: 20000 });
+  assert.ok(await p2.evaluate(() => !!navigator.serviceWorker.controller));
+  ok('서비스 워커가 교차 출처 격리를 켬 (WASM 멀티스레드 가능)');
+  await ctx2.close();
+  plain.close();
 } finally {
   await browser.close();
   server.close();

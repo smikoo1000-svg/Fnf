@@ -155,6 +155,18 @@ input[type='range'] { width: 100%; accent-color: var(--accent); }
 .chips b { color: var(--accent); }
 .note { font-size: 0.86rem; margin: 12px 0 0; }
 
+/* 검증 리포트 */
+.check-report { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 8px; }
+.check-report summary { cursor: pointer; font-weight: 600; font-size: 0.92rem; padding: 4px 0; }
+.check-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.check-list li { display: grid; grid-template-columns: 1.6em minmax(7em, auto) 1fr; gap: 6px; align-items: baseline; font-size: 0.88rem; }
+.check-list .st { font-weight: 700; text-align: center; }
+.check-list .ok .st { color: var(--ok); }
+.check-list .warn .st { color: var(--warn-ink); }
+.check-list .error .st { color: var(--err-ink); }
+.check-list .nm { font-weight: 600; }
+.check-list .dt { color: var(--muted); min-width: 0; overflow-wrap: anywhere; }
+
 /* 플레이어 */
 .player { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; }
 .time { min-width: 5.6em; font-size: 0.88rem; color: var(--muted); }
