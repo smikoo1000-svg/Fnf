@@ -13,6 +13,8 @@ const WIN = 4096;
 export const TK_SYMBOLS = [-64, -67, ...Array.from({ length: 88 }, (_, i) => 21 + i)];
 const N_SYM = TK_SYMBOLS.length;
 const CTX_DIM = 256;
+/** 앱 기본 페달 구간 보너스 (scripts/eval/tune-pedal.mjs 로 MAESTRO 검증 세트에서 고른 값) */
+export const TK_PEDAL_BONUS = 0;
 
 /** transkun/Util.py makeFrame: 앞에 반 창 패딩, hop 간격으로 창 길이만큼 자른다. → [C, nFrame, WIN] */
 export function makeFrames(channels, start, length) {
@@ -99,8 +101,12 @@ export function resolveOverlapping(events) {
   return events.filter((e) => e.start < e.end).sort(cmp);
 }
 
-/** ONNX 출력(양수 구간 목록) → 기호별 비터비 경로 */
-function decodeSegment(posIdx, posVal, T, forcedStartPos) {
+/**
+ * ONNX 출력(양수 구간 목록) → 기호별 비터비 경로.
+ * pedalBonus > 0 이면 서스테인 페달 구간마다 점수를 더해, 짧게 떼었다 다시 밟는 페달(리페달링)을
+ * 한 구간으로 합쳐 버리는 경향을 줄인다(원본에 없는 후처리, 0 이면 원본과 같다).
+ */
+function decodeSegment(posIdx, posVal, T, forcedStartPos, pedalBonus = 0) {
   const diag = Array.from({ length: N_SYM }, () => new Float64Array(T));
   const ivs = Array.from({ length: N_SYM }, () => []);
   const K = posVal.length;
@@ -108,7 +114,7 @@ function decodeSegment(posIdx, posVal, T, forcedStartPos) {
     const end = Number(posIdx[3 * k]);
     const begin = Number(posIdx[3 * k + 1]);
     const sym = Number(posIdx[3 * k + 2]);
-    const score = posVal[k];
+    const score = posVal[k] + (sym === 0 ? pedalBonus : 0);
     if (end === begin) diag[sym][end] = score;
     else ivs[sym].push({ begin, end, score });
   }
@@ -118,10 +124,10 @@ function decodeSegment(posIdx, posVal, T, forcedStartPos) {
 /**
  * @param {Float32Array[]} channels 44.1kHz, 1~2 채널
  * @param {object} rt { ort, core, attr } — onnxruntime-web 모듈과 두 세션
- * @param {{segmentSec?:number, stepSec?:number, onProgress?:Function, shouldCancel?:Function}} [opt]
+ * @param {{segmentSec?:number, stepSec?:number, pedalBonus?:number, onProgress?:Function, shouldCancel?:Function}} [opt]
  * @returns {Promise<{notes:{start:number,end:number,pitch:number,velocity:number}[], pedals:{start:number,end:number,pitch:number,velocity:number}[]}>}
  */
-export async function transkunTranscribe(channels, rt, { segmentSec = 16, stepSec = 8, onProgress = () => {}, shouldCancel = () => false } = {}) {
+export async function transkunTranscribe(channels, rt, { segmentSec = 16, stepSec = 8, pedalBonus = TK_PEDAL_BONUS, onProgress = () => {}, shouldCancel = () => false } = {}) {
   const { ort, core, attr } = rt;
   const len = channels[0].length;
   const padTimeBegin = segmentSec - stepSec;
@@ -145,7 +151,7 @@ export async function transkunTranscribe(channels, rt, { segmentSec = 16, stepSe
     const { data, dims, nFrame } = makeFrames(channels, i - pad, segmentSize);
     const out = await core.run({ frames: new ort.Tensor('float32', data, dims) });
     const T = nFrame;
-    const paths = decodeSegment(out.posIdx.data, out.posVal.data, T, startPos);
+    const paths = decodeSegment(out.posIdx.data, out.posVal.data, T, startPos, pedalBonus);
     const ctx = out.ctx.data;
     const nIv = paths.reduce((a, p) => a + p.length, 0);
 

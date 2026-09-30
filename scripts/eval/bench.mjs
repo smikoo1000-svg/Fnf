@@ -9,6 +9,7 @@
 //   --noise white|pink --snr DB   잡음 섞기
 //   --denoise         잡음 제거 전처리 적용 (js/eval/denoise.js, 실험용)
 //   --step S          구간 이동 간격(초, 기본 8 = 원본 설정)
+//   --pedal-bonus B   페달 구간 보너스 (기본: 앱과 같은 값 TK_PEDAL_BONUS, 0 = 원본 디코딩)
 //   --threads N       WASM 스레드 수 (기본 4)
 //   --out FILE        결과 JSON 저장
 //   --save DIR        곡별 전사 결과(음·페달) 저장
@@ -16,7 +17,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as ort from 'onnxruntime-web';
-import { transkunTranscribe } from '../../js/analysis/transkun.js';
+import { transkunTranscribe, TK_PEDAL_BONUS } from '../../js/analysis/transkun.js';
 import { transcriptionReport, extendByPedal } from '../../js/eval/metrics.js';
 import { parseMidiFile } from '../../js/eval/midi-read.js';
 import { addNoise } from '../../js/eval/noise.js';
@@ -32,6 +33,7 @@ const subset = JSON.parse(fs.readFileSync(path.join(root, 'scripts/eval/maestro-
 const pick = args.pieces ? String(args.pieces).split(',').map(Number) : subset.map((_, i) => i);
 const secs = args.secs ? Number(args.secs) : 0;
 ort.env.wasm.numThreads = Number(args.threads ?? 4);
+const pedalBonus = args['pedal-bonus'] != null ? Number(args['pedal-bonus']) : TK_PEDAL_BONUS;
 
 /** 잘라 낸 구간 평가: 구간 끝 근처(1초)에서 시작하거나 끝나는 음은 양쪽에서 제외 */
 function inWindow(notes, limit) {
@@ -49,7 +51,7 @@ for (const idx of pick) {
   if (args.denoise) channels = channels.map((c) => denoise(c).signal);
   const gt = parseMidiFile(new Uint8Array(fs.readFileSync(path.join(dataDir, piece.id + '.midi'))));
   const t0 = performance.now();
-  const r = await transkunTranscribe(channels, { ort, core, attr }, { stepSec: Number(args.step ?? 8) });
+  const r = await transkunTranscribe(channels, { ort, core, attr }, { stepSec: Number(args.step ?? 8), pedalBonus });
   const sec = (performance.now() - t0) / 1000;
   const dur = channels[0].length / 44100;
   const limit = secs || 0;
@@ -73,7 +75,7 @@ const summary = {
   onsetPrecision: mean((r) => r.key.onset.precision),
   onsetRecall: mean((r) => r.key.onset.recall),
   realTimeFactor: results.reduce((a, r) => a + r.sec, 0) / results.reduce((a, r) => a + r.dur, 0),
-  config: { secs, noise: args.noise ?? null, snr: args.snr ? Number(args.snr) : null, denoise: !!args.denoise, step: Number(args.step ?? 8), threads: ort.env.wasm.numThreads },
+  config: { secs, noise: args.noise ?? null, snr: args.snr ? Number(args.snr) : null, denoise: !!args.denoise, step: Number(args.step ?? 8), pedalBonus, threads: ort.env.wasm.numThreads },
 };
 console.log('\n곡 평균:', JSON.stringify(summary, null, 1));
 if (args.out) fs.writeFileSync(args.out, JSON.stringify({ summary, results }, null, 1));

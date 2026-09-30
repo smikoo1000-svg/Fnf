@@ -1,6 +1,6 @@
 """MAESTRO v3 테스트 세트 일부를 HTTP Range 요청으로 받는다 (전체 zip 108GB 를 내려받지 않음).
-사용법: python scripts/eval/fetch_maestro.py [저장 폴더=data/maestro]
-대상 곡: scripts/eval/maestro-subset.json   /   데이터 라이선스: CC BY-NC-SA 4.0 (저장소에는 포함하지 않음)
+사용법: python scripts/eval/fetch_maestro.py [저장 폴더=data/maestro] [곡 목록=scripts/eval/maestro-subset.json]
+대상 곡: scripts/eval/maestro-subset.json (평가용, 테스트 세트) / maestro-tune.json (후처리 값 조정용, 검증 세트)   /   데이터 라이선스: CC BY-NC-SA 4.0 (저장소에는 포함하지 않음)
 """
 import io, json, os, sys, urllib.request, zipfile
 
@@ -34,7 +34,7 @@ class RangeFile(io.RawIOBase):
 here = os.path.dirname(os.path.abspath(__file__))
 out_dir = sys.argv[1] if len(sys.argv) > 1 else os.path.join(here, "..", "..", "data", "maestro")
 os.makedirs(out_dir, exist_ok=True)
-subset = json.load(open(os.path.join(here, "maestro-subset.json"), encoding="utf-8"))
+subset = json.load(open(sys.argv[2] if len(sys.argv) > 2 else os.path.join(here, "maestro-subset.json"), encoding="utf-8"))
 zf = zipfile.ZipFile(io.BufferedReader(RangeFile(URL), buffer_size=8 << 20))
 for r in subset:
     for key, ext in (("midi", ".midi"), ("audio", ".wav")):

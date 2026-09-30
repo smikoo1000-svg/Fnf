@@ -1,0 +1,82 @@
+[
+ {
+  "id": "MIDI-Unprocessed_16_R2_2009_01_ORIG_MID--AUDIO_16_R2_2009_16_R2_2009_03_WAV",
+  "composer": "Franz Schubert",
+  "title": "Sonata in C Major, D842",
+  "audio": "2009/MIDI-Unprocessed_16_R2_2009_01_ORIG_MID--AUDIO_16_R2_2009_16_R2_2009_03_WAV.wav",
+  "midi": "2009/MIDI-Unprocessed_16_R2_2009_01_ORIG_MID--AUDIO_16_R2_2009_16_R2_2009_03_WAV.midi",
+  "duration": 312.6
+ },
+ {
+  "id": "MIDI-Unprocessed_23_R3_2011_MID--AUDIO_R3-D8_03_Track03_wav",
+  "composer": "Robert Schumann",
+  "title": "Romances Op. 28, Nos. 2 and 3",
+  "audio": "2011/MIDI-Unprocessed_23_R3_2011_MID--AUDIO_R3-D8_03_Track03_wav.wav",
+  "midi": "2011/MIDI-Unprocessed_23_R3_2011_MID--AUDIO_R3-D8_03_Track03_wav.midi",
+  "duration": 245.8
+ },
+ {
+  "id": "MIDI-Unprocessed_12_R1_2006_01-08_ORIG_MID--AUDIO_12_R1_2006_04_Track04_wav",
+  "composer": "Sergei Rachmaninoff",
+  "title": "Polka de W. R.",
+  "audio": "2006/MIDI-Unprocessed_12_R1_2006_01-08_ORIG_MID--AUDIO_12_R1_2006_04_Track04_wav.wav",
+  "midi": "2006/MIDI-Unprocessed_12_R1_2006_01-08_ORIG_MID--AUDIO_12_R1_2006_04_Track04_wav.midi",
+  "duration": 199.6
+ },
+ {
+  "id": "ORIG-MIDI_03_7_8_13_Group__MID--AUDIO_18_R2_2013_wav--3",
+  "composer": "Frédéric Chopin",
+  "title": "Nocturne in E-flat Major, Op. 55 No. 2",
+  "audio": "2013/ORIG-MIDI_03_7_8_13_Group__MID--AUDIO_18_R2_2013_wav--3.wav",
+  "midi": "2013/ORIG-MIDI_03_7_8_13_Group__MID--AUDIO_18_R2_2013_wav--3.midi",
+  "duration": 278.4
+ },
+ {
+  "id": "MIDI-Unprocessed_02_R1_2009_03-06_ORIG_MID--AUDIO_02_R1_2009_02_R1_2009_05_WAV",
+  "composer": "Alexander Scriabin",
+  "title": "Etude Op. 8, No. 13",
+  "audio": "2009/MIDI-Unprocessed_02_R1_2009_03-06_ORIG_MID--AUDIO_02_R1_2009_02_R1_2009_05_WAV.wav",
+  "midi": "2009/MIDI-Unprocessed_02_R1_2009_03-06_ORIG_MID--AUDIO_02_R1_2009_02_R1_2009_05_WAV.midi",
+  "duration": 167.1
+ },
+ {
+  "id": "MIDI-Unprocessed_055_PIANO055_MID--AUDIO-split_07-07-17_Piano-e_1-04_wav--3",
+  "composer": "Franz Liszt",
+  "title": "Études d'exécution transcendante, No. 12, \"Chasse-Neige\" S.139/12",
+  "audio": "2017/MIDI-Unprocessed_055_PIANO055_MID--AUDIO-split_07-07-17_Piano-e_1-04_wav--3.wav",
+  "midi": "2017/MIDI-Unprocessed_055_PIANO055_MID--AUDIO-split_07-07-17_Piano-e_1-04_wav--3.midi",
+  "duration": 270.7
+ },
+ {
+  "id": "MIDI-Unprocessed_XP_19_R1_2004_01-02_ORIG_MID--AUDIO_19_R1_2004_01_Track01_wav",
+  "composer": "Joseph Haydn",
+  "title": "Sonata in D Major, Hob. XVI:24",
+  "audio": "2004/MIDI-Unprocessed_XP_19_R1_2004_01-02_ORIG_MID--AUDIO_19_R1_2004_01_Track01_wav.wav",
+  "midi": "2004/MIDI-Unprocessed_XP_19_R1_2004_01-02_ORIG_MID--AUDIO_19_R1_2004_01_Track01_wav.midi",
+  "duration": 208.3
+ },
+ {
+  "id": "MIDI-UNPROCESSED_01-03_R1_2014_MID--AUDIO_03_R1_2014_wav--2",
+  "composer": "Johann Sebastian Bach",
+  "title": "Prelude and Fugue in B Major, WTC I, BWV 868",
+  "audio": "2014/MIDI-UNPROCESSED_01-03_R1_2014_MID--AUDIO_03_R1_2014_wav--2.wav",
+  "midi": "2014/MIDI-UNPROCESSED_01-03_R1_2014_MID--AUDIO_03_R1_2014_wav--2.midi",
+  "duration": 188.7
+ },
+ {
+  "id": "MIDI-Unprocessed_058_PIANO058_MID--AUDIO-split_07-07-17_Piano-e_2-02_wav--3",
+  "composer": "Ludwig van Beethoven",
+  "title": "Sonata No. 11, Op. 22 in B-flat Major, I. Allegro con brio",
+  "audio": "2017/MIDI-Unprocessed_058_PIANO058_MID--AUDIO-split_07-07-17_Piano-e_2-02_wav--3.wav",
+  "midi": "2017/MIDI-Unprocessed_058_PIANO058_MID--AUDIO-split_07-07-17_Piano-e_2-02_wav--3.midi",
+  "duration": 321.8
+ },
+ {
+  "id": "MIDI-Unprocessed_Recital9-11_MID--AUDIO_09_R1_2018_wav--3",
+  "composer": "Franz Schubert / Franz Liszt",
+  "title": "Der Mueller und der Bach",
+  "audio": "2018/MIDI-Unprocessed_Recital9-11_MID--AUDIO_09_R1_2018_wav--3.wav",
+  "midi": "2018/MIDI-Unprocessed_Recital9-11_MID--AUDIO_09_R1_2018_wav--3.midi",
+  "duration": 301.6
+ }
+]
